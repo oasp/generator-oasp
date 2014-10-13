@@ -15,13 +15,13 @@ The template integrates best-in-class frameworks and libraries such as AngularJS
 
 How it works
 -----
-The application template has, in fact, just two simple modules: [here](http://oasp.github.io/oasp4js/app-template) you can see how the application's starting point looks like. [Here](http://oasp.github.io/oasp4js/app-template), on the other hand, you can see a much more complex case: the current sample application built on the template.
+The application template has, in fact, just two simple modules: [here](http://oasp.github.io/oasp4js/app-template) you can see how the application's starting point looks like. [Here](http://oasp-ci.cloudapp.net/oasp4j-sample/jsclient), on the other hand, you can see a much more complex case: the current sample application built on the template.
 
 Getting Started
 ----
 To get started you simply need to clone this repository and install the dependencies.
 ### 1. Install prerequisites
-You need a Git client to clone the repository and the Node.js platform (including its package manager - npm) which allows Grunt and Bower to install the dependencies and build the application. [Here]() you can learn how to install the prerequisites.     
+You need a Git client to clone the repository and the Node.js platform (including its package manager - npm) which allows Grunt and Bower to install the dependencies and build the application. [Here](https://github.com/oasp/oasp4js-app-template/wiki/Prerequisites) you can learn how to install the prerequisites.     
 ### 2. Clone the Git repository
 Clone the application template repository using Git (e.g. to the `myapp` directory):
 
@@ -76,5 +76,5 @@ Build the application:
 grunt serve:dist
 ```
 
-The above Grunt's task creates the `myapp/dist` directory and put there the HTML documents, CSS files (compiled from Less files), JavaScript files (merged, minimized and obfuscated). 
+The above Grunt's task creates the `myapp/dist` directory and put there HTML documents, CSS files (compiled from Less files) and JavaScript files (merged, minimized and obfuscated). 
 
