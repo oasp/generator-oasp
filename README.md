@@ -27,12 +27,17 @@ Clone the application template repository using Git (e.g. to the `myapp` directo
 
 ```
 git clone https://github.com/oasp/oasp4js-app-template.git myapp
-cd myapp
 ```
 ### 3. Install the dependencies
 The application template has two kinds of dependencies: tools used to develop, test and build the application and JavaScript libraries the application uses.
 
-Both kinds of dependencies can be installed via:
+For installing both kinds of dependencies go to project root directory:
+
+```
+cd myapp
+```
+
+and install the dependencies via:
 
 ```
 npm install
@@ -41,6 +46,8 @@ npm install
 The tools are installed in the `myapp/node_modules` directory, while the JavaScript libraries in the `myapp/app/bower_components` directory (as configured in `myapp/.bowerrc`). Please note that the latter was actually done by Bower's `bower install` which was called as the npm's post install step (as configured in `myapp/package.json`).       
 
 ### 4. Enjoy
+
+Please note that all command below must be executed in project root directory.
 
 #### Developing
 
