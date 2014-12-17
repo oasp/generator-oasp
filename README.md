@@ -83,5 +83,9 @@ Build the application:
 grunt serve:dist
 ```
 
-The above Grunt's task creates the `myapp/dist` directory and put there HTML documents, CSS files (compiled from Less files) and JavaScript files (merged, minimized and obfuscated). 
+The above Grunt's task creates the `myapp/dist` directory and put there HTML documents, CSS files (compiled from Less files) and JavaScript files (merged, minimized and obfuscated).
+ 
+#### More info
+
+For more details, please refer to the [wiki](https://github.com/oasp/oasp4js-app-template/wiki).
 
