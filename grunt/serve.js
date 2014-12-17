@@ -16,6 +16,14 @@ module.exports = function (grunt) {
                         changeOrigin: true
                     },
                     {
+                        context: '/<%= config.context %>/websocket',
+                        host: 'localhost',
+                        port: 8081,
+                        https: false,
+                        changeOrigin: true,
+                        ws: true
+                    },
+                    {
                         context: '/<%= config.context %>',
                         host: 'localhost',
                         port: 9000,
@@ -33,7 +41,7 @@ module.exports = function (grunt) {
                     open: {
                         target: 'http://localhost:9000/<%= config.context %>/'
                     },
-                    base: ['<%= config.paths.tmp %>', '<%= config.paths.app %>'],
+                    base: ['<%= config.paths.tmp %>', '<%= config.paths.app %>', '<%= config.paths.app %>/bower_components/bootstrap'],
                     middleware: function (connect, options) {
                         if (!Array.isArray(options.base)) {
                             options.base = [options.base];

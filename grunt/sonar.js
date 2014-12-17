@@ -1,5 +1,6 @@
 module.exports = function (grunt) {
     'use strict';
+    var argv = require('yargs').argv;
     grunt.mergeConfig({
         sonarRunner: {
             analysis: {
@@ -8,6 +9,8 @@ module.exports = function (grunt) {
                     separator: '\n',
                     dryRun: false,
                     sonar: {
+                        login: argv.login,
+                        password: argv.password,
                         host: {
                             url: 'http://localhost:9000/sonarqube'
                         },
