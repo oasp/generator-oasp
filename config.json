@@ -7,14 +7,8 @@
     },
     "modules": [
         "main",
-        "oasp-mock",
-        "oasp",
-        "oasp/oasp-security",
-        "oasp/oasp-ui",
-        "oasp/oasp-i18n",
-        "offer-mgmt",
-        "sales-mgmt",
-        "table-mgmt"
+        "component-1",
+        "component-2"
     ],
     "appBuild": true,
     "proxy": "http://localhost:8081",
