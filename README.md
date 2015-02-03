@@ -11,7 +11,7 @@ Does not reinvent the wheel
 -----
 oasp4js just brings its idea on an application structure and makes use of well-known tools such as [Gulp](http://gulpjs.com/) or [Bower](http://bower.io/) which support developers in their activities. This all makes coding, testing and building the application extremely efficient.
 
-The template integrates best-in-class frameworks and libraries such as AngularJS and Bootstrap as well as [oasp4js extensions](https://github.com/oasp/oasp4js).
+The template integrates best-in-class frameworks and libraries such as AngularJS and Bootstrap. Also, if you would like to take advantage of the [oasp4js AngularJS modules](https://github.com/oasp/oasp4js), [here](https://github.com/oasp/oasp4js) you can learn how to do it.
 
 How it works
 -----
