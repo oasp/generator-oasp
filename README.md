@@ -9,7 +9,7 @@ There are a lot of JavaScript/AngularJS application seeds like [angular-seed](ht
 
 Does not reinvent the wheel
 -----
-oasp4js just brings its idea on an application structure and makes use of well-known tools such as [Grunt](http://gruntjs.com/) or [Bower](http://bower.io/) which support developers in their activities. This all makes coding, testing and building the application extremely efficient.
+oasp4js just brings its idea on an application structure and makes use of well-known tools such as [Gulp](http://gulpjs.com/) or [Bower](http://bower.io/) which support developers in their activities. This all makes coding, testing and building the application extremely efficient.
 
 The template integrates best-in-class frameworks and libraries such as AngularJS and Bootstrap as well as [oasp4js extensions](https://github.com/oasp/oasp4js).
 
@@ -21,7 +21,7 @@ Getting Started
 ----
 To get started you simply need to clone this repository and install the dependencies.
 ### 1. Install prerequisites
-You need a Git client to clone the repository and the Node.js platform (including its package manager - npm) which allows Grunt and Bower to install the dependencies and build the application. [Here](https://github.com/oasp/oasp4js-app-template/wiki/Prerequisites) you can learn how to install the prerequisites.     
+You need a Git client to clone the repository and the Node.js platform (including its package manager - npm) which allows Gulp and Bower to install the dependencies and build the application. [Here](https://github.com/oasp/oasp4js-app-template/wiki/Prerequisites) you can learn how to install the prerequisites.     
 ### 2. Clone the Git repository
 Clone the application template repository using Git (e.g. to the `myapp` directory):
 
@@ -51,28 +51,28 @@ Please note that all command below must be executed in project root directory.
 
 #### Developing
 
-Start the application using Grunt:
+Start the application using Gulp:
 
 ```
-grunt serve
+gulp serve
 ```
 
-The above Grunt's task opens the application in your default browser and watches for any HTML/JavaScript/CSS changes. Once you do one, the page is reloaded automatically! 
+The above Gulp's task opens the application in your default browser and watches for any HTML/JavaScript/CSS changes. Once you do one, the page is reloaded automatically! 
 
 #### Testing
 
 Run application's Jasmine tests:
 
 ```
-grunt test:tdd
+gulp test:tdd
 ```
 
-This Grunt's task uses the Karma test runner to execute Jasmine tests (against the PhantomJS) and watches for any change in your JavaScript files (both sources and specs).  Test Driven Development has never been easier :)
+This Gulp's task uses the Karma test runner to execute Jasmine tests (against the PhantomJS) and watches for any change in your JavaScript files (both sources and specs).  Test Driven Development has never been easier :)
 
 If you would like to run the tests against a real browser (rather than against the PhantomJS) or use it to debug a test, call: 
 
 ```
-grunt test:tdd:debug
+gulp test:tdd:debug
 ```
 
 #### Building
@@ -80,10 +80,10 @@ grunt test:tdd:debug
 Build the application: 
 
 ```
-grunt serve:dist
+gulp serve:dist
 ```
 
-The above Grunt's task creates the `myapp/dist` directory and put there HTML documents, CSS files (compiled from Less files) and JavaScript files (merged, minimized and obfuscated).
+The above Gulp's task creates the `myapp/dist` directory and put there HTML documents, CSS files (compiled from Less files) and JavaScript files (merged, minimized and obfuscated).
  
 #### More info
 

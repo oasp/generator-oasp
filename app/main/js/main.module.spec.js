@@ -5,8 +5,8 @@ describe('\'app.main\' module', function () {
     beforeEach(function () {
         module('ngRoute', function ($routeProvider) {
             routeProvider = $routeProvider;
-            spyOn(routeProvider, 'when').andCallThrough();
-            spyOn(routeProvider, 'otherwise').andCallThrough();
+            spyOn(routeProvider, 'when').and.callThrough();
+            spyOn(routeProvider, 'otherwise').and.callThrough();
         });
         module('app.main');
     });

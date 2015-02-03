@@ -5,7 +5,7 @@ describe('\'app\' module', function () {
     beforeEach(function () {
         module('ng', function ($locationProvider) {
             locationProvider = $locationProvider;
-            spyOn(locationProvider, 'html5Mode').andCallThrough();
+            spyOn(locationProvider, 'html5Mode').and.callThrough();
         });
         module('app');
     });
