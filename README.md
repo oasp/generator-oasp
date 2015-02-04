@@ -21,7 +21,7 @@ Getting Started
 ----
 To get started you simply need to clone this repository and install the dependencies.
 ### 1. Install prerequisites
-You need a Git client to clone the repository and the Node.js platform (including its package manager - npm) which allows Gulp and Bower to install the dependencies and build the application. [Here](https://github.com/oasp/oasp4js-app-template/wiki/Prerequisites) you can learn how to install the prerequisites.     
+You need a Git client to clone the repository and the Node.js platform (including its package manager - npm) which allows Gulp and Bower to install the dependencies and build the application. [Here](https://github.com/oasp/oasp4js/wiki/Prerequisites) you can learn how to install the prerequisites.     
 ### 2. Clone the Git repository
 Clone the application template repository using Git (e.g. to the `myapp` directory):
 
@@ -87,5 +87,5 @@ The above Gulp's task creates the `myapp/dist` directory and put there HTML docu
  
 #### More info
 
-For more details, please refer to the [wiki](https://github.com/oasp/oasp4js-app-template/wiki).
+For more details, please refer to the [wiki](https://github.com/oasp/oasp4js/wiki).
 
