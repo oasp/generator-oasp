@@ -33,9 +33,9 @@ module.exports = {
       'use strict';
       var path;
       if (module.submodule) {
-        path = '{0}/{1}/{2}/{2}.module.js'.format(config.app, module.module, module.submodule);
+        path = '{0}/{1}/{2}/{2}.module.js'.format(config.appPath, module.module, module.submodule);
       } else {
-        path = '{0}/{1}/{1}.module.js'.format(config.app, module.module);
+        path = '{0}/{1}/{1}.module.js'.format(config.appPath, module.module);
       }
       return path;
     },
@@ -43,9 +43,9 @@ module.exports = {
       'use strict';
       var path;
       if (module.submodule) {
-        path = '{0}/{1}/{2}/css/{2}.less'.format(config.app, module.module, module.submodule);
+        path = '{0}/{1}/{2}/css/{2}.less'.format(config.appPath, module.module, module.submodule);
       } else {
-        path = '{0}/{1}/css/{1}.less'.format(config.app, module.module);
+        path = '{0}/{1}/css/{1}.less'.format(config.appPath, module.module);
       }
       return path;
     }

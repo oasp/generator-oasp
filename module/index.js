@@ -13,6 +13,7 @@ module.exports = yeoman.generators.Base.extend({
       required: true,
       desc: 'Module name'
     });
+    this.currentConfig = this.config.getAll();
     this.module = oaspUtil.expandModule(this.moduleName);
   },
 
@@ -21,13 +22,13 @@ module.exports = yeoman.generators.Base.extend({
   },
   writing: {
     saveModuleFile: function () {
-      var modulePath = oaspUtil.pathBuilder.forModuleFile({app: 'app'}, this.module);
+      var modulePath = oaspUtil.pathBuilder.forModuleFile(this.currentConfig, this.module);
       if (!this.fs.exists(modulePath)) {
         this.fs.copyTpl(
           this.templatePath('module.js'),
           this.destinationPath(modulePath),
           {
-            moduleName: oaspUtil.angularNamesBuilder.moduleName({appModule: 'app'}, this.module)
+            moduleName: oaspUtil.angularNamesBuilder.moduleName(this.currentConfig, this.module)
           }
         );
       } else {
@@ -35,7 +36,7 @@ module.exports = yeoman.generators.Base.extend({
       }
     },
     saveLessFile: function () {
-      var lessPath = oaspUtil.pathBuilder.forLessPath({app: 'app'}, this.module);
+      var lessPath = oaspUtil.pathBuilder.forLessPath(this.currentConfig, this.module);
       if (!this.fs.exists(lessPath)) {
         this.fs.copyTpl(
           this.templatePath('module.less'),
