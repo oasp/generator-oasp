@@ -1,0 +1,40 @@
+{
+  "name": "generator-oasp",
+  "version": "0.0.0",
+  "description": "Yeoman generator",
+  "license": "MIT",
+  "main": "app/index.js",
+  "repository": "tbialecki/generator-oasp",
+  "author": {
+    "name": "Tomasz Białecki",
+    "email": "tomasz@tomaszbialecki.info",
+    "url": "https://github.com/tbialecki"
+  },
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "files": [
+    "app",
+    "module"
+  ],
+  "keywords": [
+    "yeoman-generator"
+  ],
+  "dependencies": {
+    "chalk": "^0.5.0",
+    "string": "^3.0.0",
+    "underscore": "^1.7.0",
+    "underscore.string": "^3.0.3",
+    "yeoman-generator": "^0.18.0",
+    "yosay": "^0.3.0"
+  },
+  "devDependencies": {
+    "mocha": "*"
+  },
+  "peerDependencies": {
+    "yo": ">=1.0.0"
+  }
+}
