@@ -13,5 +13,17 @@
   "quotmark": "single",
   "undef": true,
   "unused": true,
-  "strict": true
+  "strict": true,
+  "globals": {
+    // MOCHA
+    "describe": false,
+    "it": false,
+    "before": false,
+    "beforeEach": false,
+    "after": false,
+    "afterEach": false,
+    "expect": false,
+    "jasmine": false,
+    "spyOn": false
+  }
 }

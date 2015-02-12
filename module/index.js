@@ -7,17 +7,16 @@ module.exports = yeoman.generators.Base.extend({
 
   constructor: function () {
     yeoman.generators.Base.apply(this, arguments);
-
     this.argument('moduleName', {
       type: String,
       required: true,
       desc: 'Module name'
     });
-    this.currentConfig = this.config.getAll();
     this.module = oaspUtil.expandModule(this.moduleName);
   },
 
   initializing: function () {
+    this.currentConfig = this.config.getAll();
     this.log('-> Generating module ' + this.moduleName + '.');
   },
   writing: {
@@ -47,7 +46,7 @@ module.exports = yeoman.generators.Base.extend({
       }
     },
     injectModuleIntoConfig: function () {
-      var config = {};
+      var config = {}, done = this.async();
       if (this.fs.exists('config.json')) {
         config = this.fs.readJSON('config.json');
       }
@@ -56,6 +55,7 @@ module.exports = yeoman.generators.Base.extend({
         config.modules.push(this.moduleName);
       }
       this.fs.writeJSON('config.json', config);
+      this.fs.commit(done);
     }
   }
 });
