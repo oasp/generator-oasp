@@ -29,13 +29,33 @@ module.exports = {
     }
   },
   pathBuilder: {
+    forControllerFile: function (config, module, controller) {
+      'use strict';
+      var path;
+      if (module.submodule) {
+        path = '{0}/{1}/{2}/js/{3}.controller.js'.format(config.appPath, module.module, module.submodule, controller);
+      } else {
+        path = '{0}/{1}/js/{2}.controller.js'.format(config.appPath, module.module, controller);
+      }
+      return path;
+    },
+    forControllerSpecFile: function (config, module, controller) {
+      'use strict';
+      var path;
+      if (module.submodule) {
+        path = '{0}/{1}/{2}/js/{3}.controller.spec.js'.format(config.appPath, module.module, module.submodule, controller);
+      } else {
+        path = '{0}/{1}/js/{2}.controller.spec.js'.format(config.appPath, module.module, controller);
+      }
+      return path;
+    },
     forModuleFile: function (config, module) {
       'use strict';
       var path;
       if (module.submodule) {
-        path = '{0}/{1}/{2}/{2}.module.js'.format(config.appPath, module.module, module.submodule);
+        path = '{0}/{1}/{2}/js/{2}.module.js'.format(config.appPath, module.module, module.submodule);
       } else {
-        path = '{0}/{1}/{1}.module.js'.format(config.appPath, module.module);
+        path = '{0}/{1}/js/{1}.module.js'.format(config.appPath, module.module);
       }
       return path;
     },
@@ -51,6 +71,20 @@ module.exports = {
     }
   },
   angularNamesBuilder: {
+    controllerName: function (controller) {
+      'use strict';
+      return _.str.camelize(controller) + 'Cntl';
+    },
+    mainModuleName: function (config, module) {
+      'use strict';
+      var moduleName;
+      if (module.submodule) {
+        moduleName = '{0}'.format(module.module);
+      } else {
+        moduleName = '{0}.{1}'.format(config.appModule, module.module);
+      }
+      return _.str.camelize(moduleName);
+    },
     moduleName: function (config, module) {
       'use strict';
       var moduleName;

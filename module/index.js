@@ -2,6 +2,7 @@
 var yeoman = require('yeoman-generator');
 var oaspUtil = require('../utils.js');
 var chalk = require('chalk');
+var ngParseModule = require('ng-parse-module');
 
 module.exports = yeoman.generators.Base.extend({
 
@@ -20,6 +21,18 @@ module.exports = yeoman.generators.Base.extend({
     this.log('-> Generating module ' + this.moduleName + '.');
   },
   writing: {
+    injectModuleIntoApp: function () {
+      if (this.fs.exists(this.currentConfig.appModulePath)) {
+        var results = ngParseModule.parse(this.currentConfig.appModulePath),
+          moduleName = oaspUtil.angularNamesBuilder.mainModuleName(this.currentConfig, this.module);
+        if (results.dependencies.modules.indexOf(moduleName) < 0) {
+          results.dependencies.modules.push(moduleName);
+          results.save();
+        }
+      } else {
+        this.log(chalk.red('-> App module file ' + this.currentConfig.appModulePath + ' not exists!'));
+      }
+    },
     saveModuleFile: function () {
       var modulePath = oaspUtil.pathBuilder.forModuleFile(this.currentConfig, this.module);
       if (!this.fs.exists(modulePath)) {

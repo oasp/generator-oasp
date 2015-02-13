@@ -8,6 +8,7 @@ module.exports = yeoman.generators.Base.extend({
     this.pkg = require('../package.json');
     this.config.set('appPath','app');
     this.config.set('appModule','app');
+    this.config.set('appModulePath','app/app.module.js');
     this.config.save();
   },
 
