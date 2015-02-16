@@ -29,45 +29,21 @@ module.exports = {
     }
   },
   pathBuilder: {
-    forControllerFile: function (config, module, controller) {
+    buildPath: function (path, config, module, item) {
       'use strict';
-      var path;
+      var result = path;
+      result = _.str.replaceAll(result, '{app}', config.appPath);
+      result = _.str.replaceAll(result, '{item}', item);
       if (module.submodule) {
-        path = '{0}/{1}/{2}/js/{3}.controller.js'.format(config.appPath, module.module, module.submodule, controller);
+        result = _.str.replaceAll(result, '{module}', module.module + '/' + module.submodule);
+        result = _.str.replaceAll(result, '{mainmodule}', module.module);
+        result = _.str.replaceAll(result, '{submodule}', module.submodule);
       } else {
-        path = '{0}/{1}/js/{2}.controller.js'.format(config.appPath, module.module, controller);
+        result = _.str.replaceAll(result, '{module}', module.module);
+        result = _.str.replaceAll(result, '{mainmodule}', module.module);
+        result = _.str.replaceAll(result, '{submodule}', module.module);
       }
-      return path;
-    },
-    forControllerSpecFile: function (config, module, controller) {
-      'use strict';
-      var path;
-      if (module.submodule) {
-        path = '{0}/{1}/{2}/js/{3}.controller.spec.js'.format(config.appPath, module.module, module.submodule, controller);
-      } else {
-        path = '{0}/{1}/js/{2}.controller.spec.js'.format(config.appPath, module.module, controller);
-      }
-      return path;
-    },
-    forModuleFile: function (config, module) {
-      'use strict';
-      var path;
-      if (module.submodule) {
-        path = '{0}/{1}/{2}/js/{2}.module.js'.format(config.appPath, module.module, module.submodule);
-      } else {
-        path = '{0}/{1}/js/{1}.module.js'.format(config.appPath, module.module);
-      }
-      return path;
-    },
-    forLessPath: function (config, module) {
-      'use strict';
-      var path;
-      if (module.submodule) {
-        path = '{0}/{1}/{2}/css/{2}.less'.format(config.appPath, module.module, module.submodule);
-      } else {
-        path = '{0}/{1}/css/{1}.less'.format(config.appPath, module.module);
-      }
-      return path;
+      return result;
     }
   },
   angularNamesBuilder: {
@@ -75,15 +51,9 @@ module.exports = {
       'use strict';
       return _.str.camelize(controller) + 'Cntl';
     },
-    mainModuleName: function (config, module) {
+    directiveName: function (controller) {
       'use strict';
-      var moduleName;
-      if (module.submodule) {
-        moduleName = '{0}'.format(module.module);
-      } else {
-        moduleName = '{0}.{1}'.format(config.appModule, module.module);
-      }
-      return _.str.camelize(moduleName);
+      return _.str.camelize(controller);
     },
     moduleName: function (config, module) {
       'use strict';
