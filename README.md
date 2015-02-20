@@ -56,6 +56,49 @@ yo oasp
 ```
 If you are using Windows Command Line it is recommended to run it as an administrator.
 
+## Enjoy
+
+Please note that all commands below must be executed in project root directory.
+
+#### Developing
+
+Start the application using Gulp:
+
+```
+gulp serve
+```
+
+The above Gulp's task opens the application in your default browser and watches for any HTML/JavaScript/CSS changes. Once you do one, the page is reloaded automatically! 
+
+#### Testing
+
+Run application's Jasmine tests:
+
+```
+gulp test:tdd
+```
+
+This Gulp's task uses the Karma test runner to execute Jasmine tests (against the PhantomJS) and watches for any change in your JavaScript files (both sources and specs).  Test Driven Development has never been easier :)
+
+If you would like to run the tests against a real browser (rather than against the PhantomJS) or use it to debug a test, call: 
+
+```
+gulp test:tdd:debug
+```
+
+#### Building
+
+Build the application: 
+
+```
+gulp serve:dist
+```
+
+The above Gulp's task creates the `myapp/dist` directory and put there HTML documents, CSS files (compiled from Less files) and JavaScript files (merged, minimized and obfuscated).
+ 
+#### More info
+
+For more details, please refer to the [wiki](https://github.com/oasp/oasp4js/wiki).
 
 ## License
 
