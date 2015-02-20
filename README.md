@@ -28,7 +28,7 @@ Basically, he wears a top hat, lives in your computer, and waits for you to tell
 
 Not every new computer comes with a Yeoman pre-installed. He lives in the [npm](https://npmjs.org) package repository. You only have to ask for him once, then he packs up and moves into your hard drive. *Make sure you clean up, he likes new and shiny things.*
 
-If you are using Windows Command Line it is recommended to run it as an administrator.
+_Hint: If you are using Windows Command Line it is recommended to run it as an administrator._
 
 ```bash
 npm install -g yo
