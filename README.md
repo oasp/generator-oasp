@@ -5,17 +5,17 @@
 
 ## Getting Started
 
-Before you start to use generator-oasp it is important to install all prerequisites. [Here](https://github.com/oasp/oasp4js/wiki/Prerequisites) you can learn how to install the necessary tools.  
+Before you start to use generator-oasp it is important to install the prerequisites. You will need the Node.js and Gulp. [Here](https://github.com/oasp/oasp4js/wiki/Prerequisites) you can learn how to install the necessary tools.  
 
 ### Why it is worth using
 
 
-It offers more than other application seeds
------
+#### It offers more than other application seeds
+
 There are a lot of JavaScript/AngularJS application seeds like [angular-seed](https://github.com/angular/angular-seed) or [angularjs-seed](https://www.npmjs.org/package/angularjs-seed). All of them are great, but they focus rather on a quick & easy start and work well for small-scale projects. oasp4js is built as a base for bigger, modularized, enterprise projects, where different modules are often developed independently and simultaneously by many teams.
 
-It does not reinvent the wheel
------
+#### It does not reinvent the wheel
+
 oasp4js just brings its idea on an application structure and makes use of well-known tools such as [Gulp](http://gulpjs.com/) or [Bower](http://bower.io/) which support developers in their activities. This all makes coding, testing and building the application extremely efficient.
 
 ### What is Yeoman?
