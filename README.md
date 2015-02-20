@@ -36,7 +36,9 @@ yo oasp
 ```
 
 You can review the Yeoman-generated app afterwards: Open up the directory in which you executed the `yo oasp` command to take a look at what was actually scaffolded. 
-You can also preview your app in the browser: Run a Gulp task to create a local, Node-based http server on localhost:9000 (or 127.0.0.1:9000 for some configurations) by typing:
+
+You can also preview your app in the browser: Run a Gulp task to create a local, Node-based http server on [localhost:9000](http://localhost:9000) (or [127.0.0.1:9000](http://127.0.0.1:9000) for some configurations) by typing: 
+
 ```bash
 gulp serve
 ```
