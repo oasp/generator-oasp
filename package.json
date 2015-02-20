@@ -16,7 +16,8 @@
         "app",
         "module",
         "controller",
-        "directive"
+        "directive",
+		"utils.js"
     ],
     "keywords": [
         "yeoman-generator",
