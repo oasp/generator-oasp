@@ -2,6 +2,7 @@
 var yeoman = require('yeoman-generator');
 var oaspUtil = require('../utils.js');
 var chalk = require('chalk');
+var ngParseModule = require('ng-parse-module');
 
 module.exports = yeoman.generators.Base.extend({
 
@@ -12,37 +13,43 @@ module.exports = yeoman.generators.Base.extend({
       required: true,
       desc: 'Module name'
     });
-    this.module = oaspUtil.expandModule(this.moduleName);
   },
 
   initializing: function () {
     this.currentConfig = this.config.getAll();
-    this.log('-> Generating module ' + this.moduleName + '.');
+    this.module = oaspUtil.expandModule(this.moduleName);
+    this.angularModuleName = oaspUtil.angularNamesBuilder.moduleName(this.currentConfig, this.module);
+    this.modulePath = oaspUtil.pathBuilder.buildPath('{app}/{module}/js/{submodule}.module.js', this.currentConfig, this.module);
+    this.lessPath = oaspUtil.pathBuilder.buildPath('{app}/{module}/css/{submodule}.less', this.currentConfig, this.module);
+    this.log('-> Generating module ' + this.angularModuleName + '.');
   },
   writing: {
-    saveModuleFile: function () {
-      var modulePath = oaspUtil.pathBuilder.forModuleFile(this.currentConfig, this.module);
-      if (!this.fs.exists(modulePath)) {
-        this.fs.copyTpl(
-          this.templatePath('module.js'),
-          this.destinationPath(modulePath),
-          {
-            moduleName: oaspUtil.angularNamesBuilder.moduleName(this.currentConfig, this.module)
-          }
-        );
+    injectModuleIntoApp: function () {
+      if (this.fs.exists(this.currentConfig.appModulePath)) {
+        var results = ngParseModule.parse(this.currentConfig.appModulePath);
+        if (results.dependencies.modules.indexOf(this.angularModuleName) < 0) {
+          results.dependencies.modules.push(this.angularModuleName);
+          results.save();
+        }
       } else {
-        this.log(chalk.red('-> Module ' + this.moduleName + ' already exists!'));
+        this.log(chalk.red('-> App module file ' + this.currentConfig.appModulePath + ' not exists!'));
+      }
+    },
+    saveModuleFile: function () {
+      var context = {
+        moduleName: this.angularModuleName
+      };
+      if (!this.fs.exists(this.modulePath)) {
+        this.fs.copyTpl(this.templatePath('module.js'), this.destinationPath(this.modulePath), context);
+      } else {
+        this.log(chalk.red('-> Module ' + this.angularModuleName + ' already exists!'));
       }
     },
     saveLessFile: function () {
-      var lessPath = oaspUtil.pathBuilder.forLessPath(this.currentConfig, this.module);
-      if (!this.fs.exists(lessPath)) {
-        this.fs.copyTpl(
-          this.templatePath('module.less'),
-          this.destinationPath(lessPath)
-        );
+      if (!this.fs.exists(this.lessPath)) {
+        this.fs.copyTpl(this.templatePath('module.less'), this.destinationPath(this.lessPath));
       } else {
-        this.log(chalk.red('-> Less for module ' + this.moduleName + ' already exists!'));
+        this.log(chalk.red('-> Less for module ' + this.module + ' already exists!'));
       }
     },
     injectModuleIntoConfig: function () {
@@ -51,8 +58,8 @@ module.exports = yeoman.generators.Base.extend({
         config = this.fs.readJSON('config.json');
       }
       config.modules = config.modules || [];
-      if (config.modules.indexOf(this.moduleName) < 0) {
-        config.modules.push(this.moduleName);
+      if (config.modules.indexOf(this.module) < 0) {
+        config.modules.push(this.module);
       }
       this.fs.writeJSON('config.json', config);
       this.fs.commit(done);

@@ -14,7 +14,9 @@
     },
     "files": [
         "app",
-        "module"
+        "module",
+        "controller",
+        "directive"
     ],
     "keywords": [
         "yeoman-generator",
