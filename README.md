@@ -35,11 +35,20 @@ Finally, initiate the generator:
 yo oasp
 ```
 
+You can review the Yeoman-generated app afterwards: Open up the directory in which you executed the `yo oasp` command to take a look at what was actually scaffolded. 
+
+You can also preview your app in the browser: Run a Gulp task to create a local, Node-based http server on [localhost:9000](http://localhost:9000) (or [127.0.0.1:9000](http://127.0.0.1:9000) for some configurations) by typing: 
+
+```bash
+gulp serve
+```
+Your web browser will launch your newly scaffolded application in a new tab. 
+
 ### Getting To Know Yeoman
 
 Yeoman has a heart of gold. He's a person with feelings and opinions, but he's very easy to work with. If you think he's too opinionated, he can be easily convinced.
 
-If you'd like to get to know Yeoman better and meet some of his friends, [Grunt](http://gruntjs.com) and [Bower](http://bower.io), check out the complete [Getting Started Guide](https://github.com/yeoman/yeoman/wiki/Getting-Started).
+If you'd like to get to know Yeoman better and meet some of his friends, [Gulp](http://gulpjs.com/) and [Bower](http://bower.io), check out the complete [Getting Started Guide](https://github.com/yeoman/yeoman/wiki/Getting-Started).
 
 
 ## License
