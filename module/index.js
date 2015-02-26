@@ -49,7 +49,7 @@ module.exports = yeoman.generators.Base.extend({
       if (!this.fs.exists(this.lessPath)) {
         this.fs.copyTpl(this.templatePath('module.less'), this.destinationPath(this.lessPath));
       } else {
-        this.log(chalk.red('-> Less for module ' + this.module + ' already exists!'));
+        this.log(chalk.red('-> Less for module ' + this.moduleName + ' already exists!'));
       }
     },
     injectModuleIntoConfig: function () {
@@ -58,8 +58,8 @@ module.exports = yeoman.generators.Base.extend({
         config = this.fs.readJSON('config.json');
       }
       config.modules = config.modules || [];
-      if (config.modules.indexOf(this.module) < 0) {
-        config.modules.push(this.module);
+      if (config.modules.indexOf(this.moduleName) < 0) {
+        config.modules.push(this.moduleName);
       }
       this.fs.writeJSON('config.json', config);
       this.fs.commit(done);
