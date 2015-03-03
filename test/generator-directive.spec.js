@@ -4,15 +4,14 @@ var path = require('path');
 var assert = require('yeoman-generator').assert;
 var helpers = require('yeoman-generator').test;
 
-describe('Oasp:module', function () {
+describe('oasp:directive', function () {
   before(function (done) {
-    helpers.run(path.join(__dirname, '../module'))
-      .withArguments('mmm')
+    helpers.run(path.join(__dirname, '../directive'))
+      .withArguments(['mmm','new-cnt'])
       .withOptions({ 'skip-install': true })
       .on('ready', function (generator) {
         generator.config.set('appPath', 'app');
         generator.config.set('appModule', 'app');
-        generator.config.set('appModulePath', 'app/app.module.js');
         generator.config.save();
       })
       .on('end', done);
@@ -20,8 +19,8 @@ describe('Oasp:module', function () {
 
   it('creates files', function () {
     assert.file([
-      'app/mmm/js/mmm.module.js',
-      'app/mmm/css/mmm.less'
+      'app/mmm/js/new-cnt.directive.js',
+      'app/mmm/js/new-cnt.directive.spec.js'
     ]);
   });
 });
