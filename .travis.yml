@@ -1,6 +1,9 @@
 language: node_js
 node_js:
   - '0.10'
+branches:
+  only:
+    - master
 before_install:
   - currentfolder=${PWD##*/}
   - if [ "$currentfolder" != 'generator-oasp' ]; then cd .. && eval "mv $currentfolder generator-oasp" && cd generator-oasp; fi
