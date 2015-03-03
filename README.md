@@ -1,4 +1,4 @@
-# generator-oasp
+# generator-oasp [![Build Status](https://travis-ci.org/oasp/generator-oasp.svg?branch=master)](https://travis-ci.org/oasp/generator-oasp)
 
 > [Yeoman](http://yeoman.io) generator for AngularJS applications powered by [OASP4JS](https://github.com/oasp/oasp4js).
 
