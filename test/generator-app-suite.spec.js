@@ -1,27 +1,22 @@
 'use strict';
 
-var path = require('path');
-var assert = require('yeoman-generator').assert;
-var helpers = require('yeoman-generator').test;
-var os = require('os');
-var fs = require('fs-extra');
-var rm = require('rimraf');
-var bower = require('bower');
-var testcases = [
-    require('./app-suite-testcases/config-factory/config-factory.js'),
-    require('./app-suite-testcases/simple/simple.js')
-];
-var output = path.join(os.tmpdir(), './temp-test');
+var path = require('path'),
+    assert = require('yeoman-generator').assert,
+    helpers = require('yeoman-generator').test,
+    oaspGenTestUtils = require('./app-suite-testcases/oasp-generator-test-utils'),
+    specs = [
+        require('./app-suite-testcases/config-factory/config-factory.js'),
+        require('./app-suite-testcases/simple/simple.js')
+    ];
 describe('oasp:app', function () {
-
     before(function (done) {
         //for development to skip npm install and save time
         if (process.env['no-generate']) {
-            process.chdir(output);
+            process.chdir(oaspGenTestUtils.testDirectory);
             done();
         } else {
             helpers.run(path.join(__dirname, '../app'))
-                .inDir(output)
+                .inDir(oaspGenTestUtils.testDirectory)
                 .withOptions({ 'skip-install': false })
                 .on('end', done);
         }
@@ -35,25 +30,8 @@ describe('oasp:app', function () {
             '.jshintrc'
         ]);
     });
-    testcases.forEach(function (testcaseFn) {
-        var testcase = testcaseFn(output);
-        describe(testcase.describe.message, function () {
-            before(function (done) {
-                if (testcase.files) {
-                    //remove files from output
-                    testcase.files.forEach(function (file) {
-                        rm.sync(path.join(output, file));
-                    });
-                    //copy test case file into output
-                    testcase.files.forEach(function (file) {
-                        fs.copySync(path.join(testcase.basepath, file), path.join(output, file));
-                    });
-                    bower.commands.install().on('end', function () {
-                        done();
-                    });
-                }
-            });
-            describe('template', testcase.describe.testcase);
-        });
+
+    specs.forEach(function (specFn) {
+        specFn();
     });
 });
