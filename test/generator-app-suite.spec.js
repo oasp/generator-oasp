@@ -13,11 +13,18 @@ var testcases = [
 ];
 var output = path.join(os.tmpdir(), './temp-test');
 describe('oasp:app', function () {
+
     before(function (done) {
-        helpers.run(path.join(__dirname, '../app'))
-            .inDir(output)
-            .withOptions({ 'skip-install': false })
-            .on('end', done);
+        //for development to skip npm install and save time
+        if (process.env['no-generate']) {
+            process.chdir(output);
+            done();
+        } else {
+            helpers.run(path.join(__dirname, '../app'))
+                .inDir(output)
+                .withOptions({ 'skip-install': false })
+                .on('end', done);
+        }
     });
 
     it('creates files', function () {
