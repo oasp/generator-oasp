@@ -5,6 +5,7 @@ var os = require('os'),
     bower = require('bower'),
     glob = require('glob'),
     spawn = require('cross-spawn'),
+    yeomanAssert = require('yeoman-generator').assert,
     assert = require('chai').assert;
 
 module.exports = exports = {
@@ -56,5 +57,20 @@ module.exports = exports = {
         });
         gulp.stdout.on('data', logFromGulp);
         gulp.stderr.on('data', logFromGulp);
+    },
+
+    assert: {
+        contaisStyle: function (fileInTestDirectory, styleUrl) {
+            var file = exports.resolvePathInTestDirectory(fileInTestDirectory);
+            yeomanAssert.fileContent(file, '<link rel="stylesheet" href="' + styleUrl + '"');
+        },
+        contaisScript: function (fileInTestDirectory, styleUrl) {
+            var file = exports.resolvePathInTestDirectory(fileInTestDirectory);
+            yeomanAssert.fileContent(file, '<script src="' + styleUrl + '"');
+        },
+        noContaisScript: function (fileInTestDirectory, styleUrl) {
+            var file = exports.resolvePathInTestDirectory(fileInTestDirectory);
+            yeomanAssert.noFileContent(file, '<script src="' + styleUrl + '"');
+        }
     }
 };

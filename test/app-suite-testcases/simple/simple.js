@@ -26,8 +26,7 @@ module.exports = function () {
                         assert.fileContent(outputLess, /\.class2/);
                     });
                     it('should inject css file into main html', function () {
-                        var outputHtml = oaspGenTestUtils.resolvePathInTestDirectory('.tmp/index.html');
-                        assert.fileContent(outputHtml, '<link rel="stylesheet" href="css/oasp.css"');
+                        oaspGenTestUtils.assert.contaisStyle('.tmp/index.html', 'css/oasp.css');
                     });
                 });
 
@@ -40,8 +39,18 @@ module.exports = function () {
                         assert.file(oaspGenTestUtils.resolvePathInTestDirectory('.tmp/img/sprite.png'));
                     });
                     it('should inject sprite css file into main html', function () {
-                        var outputHtml = oaspGenTestUtils.resolvePathInTestDirectory('.tmp/index.html');
-                        assert.fileContent(outputHtml, '<link rel="stylesheet" href="css/sprite.css"');
+                        oaspGenTestUtils.assert.contaisStyle('.tmp/index.html', 'css/sprite.css');
+                    });
+                });
+
+                describe('index html', function () {
+                    it('should contain bower libs', function () {
+                        oaspGenTestUtils.assert.contaisScript('.tmp/index.html', 'bower_components/angular/angular.js');
+                        oaspGenTestUtils.assert.contaisScript('.tmp/index.html', 'bower_components/jquery/dist/jquery.js');
+                    });
+                    it('should contain app sources in proper order', function () {
+                        oaspGenTestUtils.assert.contaisScript('.tmp/index.html', 'bower_components/angular/angular.js');
+                        oaspGenTestUtils.assert.contaisScript('.tmp/index.html', 'bower_components/jquery/dist/jquery.js');
                     });
                 });
             });
@@ -62,7 +71,7 @@ module.exports = function () {
                     });
                     it('should inject css file into main html', function () {
                         var outputLess = oaspGenTestUtils.queryFileInTestDirectory('css/oasp-*.css', distDirectory);
-                        assert.fileContent('dist/index.html', '<link rel="stylesheet" href="' + outputLess + '"');
+                        oaspGenTestUtils.assert.contaisStyle('dist/index.html', outputLess);
                     });
                 });
 
@@ -73,6 +82,22 @@ module.exports = function () {
                         assert.fileContent(outputSprite, /\.icon-en-24/);
                         assert.fileContent(outputSprite, 'url(../img/sprite.png)');
                         assert.file(oaspGenTestUtils.resolvePathInTestDirectory('dist/img/sprite.png'));
+                    });
+                });
+
+                describe('images', function () {
+                    it('should copy non sprite images to dist', function () {
+                        assert.file(oaspGenTestUtils.resolvePathInTestDirectory('dist/main/img/Koala.jpg'));
+                        assert.noFile(oaspGenTestUtils.resolvePathInTestDirectory('dist/main/img/sprite/de-24.png'));
+                        assert.noFile(oaspGenTestUtils.resolvePathInTestDirectory('dist/main/img/de-24.png'));
+                    });
+                });
+
+                describe('index html', function () {
+                    it('should contain concatenated vendor file', function () {
+                        var outputVendor = oaspGenTestUtils.queryFileInTestDirectory('js/vendor-*.js', distDirectory);
+                        oaspGenTestUtils.assert.contaisScript('dist/index.html', outputVendor);
+                        oaspGenTestUtils.assert.noContaisScript('dist/index.html', 'bower_components/angular/angular.js');
                     });
                 });
             });
