@@ -32,7 +32,7 @@ module.exports = exports = {
         destDirectory = destDirectory || this.testDirectory;
         var gulp = spawn('gulp', gulpGoals, {cwd: destDirectory}), logFromGulp = function (data) {
             if (process.env['log-gulp']) {
-                console.log(data.toString('ascii'.trim()));
+                console.log(data.toString('ascii').trim());
             }
         };
         gulp.on('close', function (code) {
