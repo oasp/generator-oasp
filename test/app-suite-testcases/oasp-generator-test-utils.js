@@ -30,19 +30,18 @@ module.exports = exports = {
 
     runGulpAndCallDone: function (gulpGoals, done, destDirectory) {
         destDirectory = destDirectory || this.testDirectory;
-        var gulp = spawn('gulp', gulpGoals, {cwd: destDirectory});
+        var gulp = spawn('gulp', gulpGoals, {cwd: destDirectory}), logFromGulp = function (data) {
+            if (process.env['log-gulp']) {
+                console.log(data.toString('ascii'.trim()));
+            }
+        };
         gulp.on('close', function (code) {
             if (code !== 0) {
                 assert.fail('gulp exited with code ' + code);
             }
             done();
         });
-        gulp.stdout.on('data', function (data) {
-            console.log('stdout: ' + data);
-        });
-
-        gulp.stderr.on('data', function (data) {
-            console.log('stderr: ' + data);
-        });
+        gulp.stdout.on('data', logFromGulp);
+        gulp.stderr.on('data', logFromGulp);
     }
 };
