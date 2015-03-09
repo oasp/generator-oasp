@@ -1,5 +1,5 @@
 var chai = require('chai'),
-    fs = require('fs'),
+    assert = require('yeoman-generator').assert,
     path = require('path'),
     oaspGenTestUtils = require('../oasp-generator-test-utils');
 
@@ -8,28 +8,71 @@ module.exports = function () {
 
     describe('simple', function () {
         before(function (done) {
-            oaspGenTestUtils.deleteOldFilesAndCopyNewOnes(['app','config.json'], __dirname);
+            oaspGenTestUtils.deleteOldFilesAndCopyNewOnes(['app', 'config.json'], __dirname);
             oaspGenTestUtils.runBowerInstallAndCallDone(done);
         });
         describe('template', function () {
             describe('build:develop', function () {
                 before(function (done) {
-                    oaspGenTestUtils.runGulpAndCallDone(['build:develop'], done);
-                });
-                after(function (done) {
-                    oaspGenTestUtils.runGulpAndCallDone(['clean'], done);
-                });
-                describe('styles', function () {
-                    it('should compile less into one file', function (done) {
-                        var outputLess = path.join(oaspGenTestUtils.testDirectory, '.tmp/css/oasp.css');
-                        fs.existsSync(outputLess).should.eql(true);
-                        var body = fs.readFileSync(outputLess, 'utf8');
-                        (body.indexOf('.class1') > -1).should.eql(true);
-                        (body.indexOf('.class2') > -1).should.eql(true);
-                        done();
+                    oaspGenTestUtils.runGulpAndCallDone(['clean'], function () {
+                        oaspGenTestUtils.runGulpAndCallDone(['build:develop'], done);
                     });
-                    it('checks if true equals to true', function () {
-                        (true).should.eql(true);
+                });
+
+                describe('styles', function () {
+                    it('should compile less file collecting code from whole app, allowing includes and propagating variables between modules', function () {
+                        var outputLess = oaspGenTestUtils.resolvePathInTestDirectory('.tmp/css/oasp.css');
+                        assert.fileContent(outputLess, /\.class1/);
+                        assert.fileContent(outputLess, /\.class2/);
+                    });
+                    it('should inject css file into main html', function () {
+                        var outputHtml = oaspGenTestUtils.resolvePathInTestDirectory('.tmp/index.html');
+                        assert.fileContent(outputHtml, '<link rel="stylesheet" href="css/oasp.css"');
+                    });
+                });
+
+                describe('sprites', function () {
+                    it('should combine png files from sprite directory and generate associated css file and image', function () {
+                        var outputSprite = oaspGenTestUtils.resolvePathInTestDirectory('.tmp/css/sprite.css');
+                        assert.fileContent(outputSprite, /\.icon-de-24/);
+                        assert.fileContent(outputSprite, /\.icon-en-24/);
+                        assert.fileContent(outputSprite, 'url(../img/sprite.png)');
+                        assert.file(oaspGenTestUtils.resolvePathInTestDirectory('.tmp/img/sprite.png'));
+                    });
+                    it('should inject sprite css file into main html', function () {
+                        var outputHtml = oaspGenTestUtils.resolvePathInTestDirectory('.tmp/index.html');
+                        assert.fileContent(outputHtml, '<link rel="stylesheet" href="css/sprite.css"');
+                    });
+                });
+            });
+
+            describe('build:dist', function () {
+                var distDirectory = path.join(oaspGenTestUtils.testDirectory, 'dist');
+                before(function (done) {
+                    oaspGenTestUtils.runGulpAndCallDone(['clean'], function () {
+                        oaspGenTestUtils.runGulpAndCallDone(['build:dist'], done);
+                    });
+                });
+
+                describe('styles', function () {
+                    it('should compile less file collecting code from whole app, allowing includes and propagating variables between modules', function () {
+                        var outputLess = oaspGenTestUtils.queryAndResolveFileInTestDirectory('css/oasp-*.css', distDirectory);
+                        assert.fileContent(outputLess, /\.class1/);
+                        assert.fileContent(outputLess, /\.class2/);
+                    });
+                    it('should inject css file into main html', function () {
+                        var outputLess = oaspGenTestUtils.queryFileInTestDirectory('css/oasp-*.css', distDirectory);
+                        assert.fileContent('dist/index.html', '<link rel="stylesheet" href="' + outputLess + '"');
+                    });
+                });
+
+                describe('sprites', function () {
+                    it('should combine png files from sprite directory and generate associated css file and image', function () {
+                        var outputSprite = oaspGenTestUtils.queryAndResolveFileInTestDirectory('css/oasp-*.css', distDirectory);
+                        assert.fileContent(outputSprite, /\.icon-de-24/);
+                        assert.fileContent(outputSprite, /\.icon-en-24/);
+                        assert.fileContent(outputSprite, 'url(../img/sprite.png)');
+                        assert.file(oaspGenTestUtils.resolvePathInTestDirectory('dist/img/sprite.png'));
                     });
                 });
             });

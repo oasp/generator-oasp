@@ -3,12 +3,25 @@ var os = require('os'),
     fs = require('fs-extra'),
     rm = require('rimraf'),
     bower = require('bower'),
+    glob = require('glob'),
     spawn = require('cross-spawn'),
     assert = require('chai').assert;
 
 module.exports = exports = {
     testDirectory: path.join(os.tmpdir(), './temp-test'),
 
+    resolvePathInTestDirectory: function (requestedPath, testDirectory) {
+        return path.join(testDirectory || this.testDirectory, requestedPath);
+    },
+
+    queryFileInTestDirectory: function (filePattern, testDirectory) {
+        var result = glob.sync(filePattern, {cwd: testDirectory || this.testDirectory});
+        return result.length ? result[0] : null;
+    },
+    queryAndResolveFileInTestDirectory: function (filePattern, testDirectory) {
+        var result = glob.sync(filePattern, {cwd: testDirectory || this.testDirectory});
+        return result.length ? this.resolvePathInTestDirectory(result[0], testDirectory) : null;
+    },
     deleteOldFilesAndCopyNewOnes: function (files, srcDirectory, destDirectory) {
         destDirectory = destDirectory || this.testDirectory;
         if (files) {
