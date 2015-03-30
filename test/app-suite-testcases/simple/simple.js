@@ -53,6 +53,16 @@ module.exports = function () {
                         oaspGenTestUtils.assert.contaisScript('.tmp/index.html', 'bower_components/jquery/dist/jquery.js');
                     });
                 });
+
+                describe('cached templates', function () {
+                    it('should generate angular module with cached html templates', function () {
+                        var cachedTemplatesModuleFile = oaspGenTestUtils.resolvePathInTestDirectory('.tmp/main/js/main.templates.js');
+                        assert.file(cachedTemplatesModuleFile);
+                        assert.fileContent(cachedTemplatesModuleFile, /angular.module\("app.main.templates", \[\]\)/);
+                        assert.fileContent(cachedTemplatesModuleFile, /main\/html\/page-not-found.html/);
+                        assert.fileContent(cachedTemplatesModuleFile, /main\/html\/welcome.html/);
+                    });
+                });
             });
 
             describe('build:dist', function () {
@@ -98,6 +108,32 @@ module.exports = function () {
                         var outputVendor = oaspGenTestUtils.queryFileInTestDirectory('js/vendor-*.js', distDirectory);
                         oaspGenTestUtils.assert.contaisScript('dist/index.html', outputVendor);
                         oaspGenTestUtils.assert.noContaisScript('dist/index.html', 'bower_components/angular/angular.js');
+                    });
+                });
+
+                describe('cached templates', function () {
+                    it('should generate angular module with cached html templates and include it into main app js file', function () {
+                        var appJsFile = oaspGenTestUtils.queryAndResolveFileInTestDirectory('dist/js/app-*.js');
+                        assert.file(appJsFile);
+                        assert.fileContent(appJsFile, /angular.module\("app.main.templates",\[\]\)/);
+                        assert.fileContent(appJsFile, /main\/html\/page-not-found.html/);
+                        assert.fileContent(appJsFile, /main\/html\/welcome.html/);
+                    });
+                });
+
+                describe('i18n', function () {
+                    it('should copy internationalization files', function () {
+                        assert.file(oaspGenTestUtils.resolvePathInTestDirectory('dist/main/i18n/locale_en.json'));
+                        assert.file(oaspGenTestUtils.resolvePathInTestDirectory('dist/main/i18n/locale_de.json'));
+                    });
+                });
+
+                describe('fonts', function () {
+                    it('should copy fonts from bower files', function () {
+                        assert.file(oaspGenTestUtils.resolvePathInTestDirectory('dist/fonts/glyphicons-halflings-regular.svg'));
+                        assert.file(oaspGenTestUtils.resolvePathInTestDirectory('dist/fonts/glyphicons-halflings-regular.ttf'));
+                        assert.file(oaspGenTestUtils.resolvePathInTestDirectory('dist/fonts/glyphicons-halflings-regular.eot'));
+                        assert.file(oaspGenTestUtils.resolvePathInTestDirectory('dist/fonts/glyphicons-halflings-regular.woff'));
                     });
                 });
             });
