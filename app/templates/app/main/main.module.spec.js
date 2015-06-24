@@ -15,7 +15,7 @@ describe('\'app.main\' module', function () {
     beforeEach(inject());
 
     it('defines a route for the welcome dialog', function () {
-        expect(routeProvider.when).toHaveBeenCalledWith('/main/welcome', { templateUrl : 'main/html/welcome.html' });
+        expect(routeProvider.when).toHaveBeenCalledWith('/main/welcome', { templateUrl : 'main/welcome/welcome.html' });
     });
 
     it('defines the default route redirecting to the welcome dialog', function () {
@@ -23,6 +23,6 @@ describe('\'app.main\' module', function () {
     });
 
     it('defines the default route redirecting to the welcome dialog', function () {
-        expect(routeProvider.otherwise).toHaveBeenCalledWith({templateUrl: 'main/html/page-not-found.html'});
+        expect(routeProvider.otherwise).toHaveBeenCalledWith({templateUrl: 'main/page-not-found/page-not-found.html'});
     });
 });
