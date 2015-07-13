@@ -10,7 +10,7 @@
     "node": ">=0.10.0"
   },
   "scripts": {
-    "test": "mocha -t 180000",
+    "test": "mocha -t 300000",
     "test-no-generate": "env no-generate=true mocha -t 0",
     "test-log-gulp": "env log-gulp=true mocha -t 0"
   },
