@@ -3,6 +3,6 @@ angular.module('app.main', ['ngRoute', 'app.main.templates'])
         'use strict';
         $routeProvider
             .when('/', {redirectTo: '/main/welcome'})
-            .when('/main/welcome', {templateUrl: 'main/html/welcome.html'})
-            .otherwise({templateUrl: 'main/html/page-not-found.html'});
+            .when('/main/welcome', {templateUrl: 'main/welcome/welcome.html'})
+            .otherwise({templateUrl: 'main/page-not-found/page-not-found.html'});
     });

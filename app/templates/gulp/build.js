@@ -122,8 +122,7 @@ gulp.task('img:copy', ['img:sprite:copy'], function (done) {
 gulp.task('fonts', function (done) {
     //TODO check font awesome
     if (isBuildForProd()) {
-        return gulp.src($.mainBowerFiles())
-            .pipe($.filter('**/*.{eot,svg,ttf,woff,woff2}'))
+        return gulp.src('bower_components/**/*.{eot,svg,ttf,woff,woff2}')
             .pipe($.flatten())
             .pipe(gulp.dest(config.output() + '/fonts/'));
     } else {

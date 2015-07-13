@@ -4,7 +4,7 @@ String.prototype.replaceAll = function (find, replace) {
     return str.replace(new RegExp(find, 'g'), replace);
 };
 
-module.exports = function (paths, modules, topLevelModules) {
+module.exports = function (paths, modules) {
     var builder = {
         build: function (path, module) {
             module = module || {};
@@ -17,9 +17,9 @@ module.exports = function (paths, modules, topLevelModules) {
         },
         buildForTopLevelModules: function () {
             var i, j, result = [];
-            for (i = 0; i < topLevelModules.length; i += 1) {
+            for (i = 0; i < modules.length; i += 1) {
                 for (j = 0; j < arguments.length; j += 1) {
-                    result.push(builder.build(arguments[j], topLevelModules[i]));
+                    result.push(builder.build(arguments[j], modules[i]));
                 }
             }
             return result;
@@ -45,9 +45,9 @@ module.exports = function (paths, modules, topLevelModules) {
         },
         visitTopLevelModules: function (factoryFn, excludeRoot) {
             var i, result = [], item;
-            for (i = 0; i < topLevelModules.length; i += 1) {
-                if (!(excludeRoot && this.isRootModule(topLevelModules[i]))) {
-                    item = factoryFn(topLevelModules[i]);
+            for (i = 0; i < modules.length; i += 1) {
+                if (!(excludeRoot && this.isRootModule(modules[i]))) {
+                    item = factoryFn(modules[i]);
                     if (item) {
                         result.push(item);
                     }

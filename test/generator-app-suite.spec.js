@@ -5,8 +5,8 @@ var path = require('path'),
     helpers = require('yeoman-generator').test,
     oaspGenTestUtils = require('./app-suite-testcases/oasp-generator-test-utils'),
     specs = [
-        require('./app-suite-testcases/config-factory/config-factory.js'),
-        require('./app-suite-testcases/simple/simple.js')
+        require('./app-suite-testcases/simple/simple.js'),
+        require('./app-suite-testcases/config-factory/config-factory.js')
     ];
 describe('oasp:app', function () {
     before(function (done) {

@@ -1,16 +1,18 @@
 {
     "paths": {
-        "tmp": "test_tmp",
-        "dist": "test_dist",
-        "app": "test_app",
-        "test": "test_test"
+        "tmp": ".tmp",
+        "dist": "dist",
+        "src": "app",
+        "testSrc": "app",
+        "testOutput": "test"
     },
-    "modules": [
-        "main",
-        "parent",
-        "parent/sub"
-    ],
-    "appBuild": true,
-    "proxy": "http://localhost:8081",
-    "proxyContext": "/oasp4j-sample-server"
+    "styles": {
+        "type": "less",
+        "output": "css/oasp.css"
+    },
+    "proxy": {
+        "baseUrl": "http://localhost:8081",
+        "context": "/oasp4j-sample-server"
+    },
+    "mainModule": "main"
 }
