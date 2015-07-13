@@ -57,6 +57,9 @@ var configFactory = function (externalConfig) {
             src: function () {
                 return builder.build('{app}');
             },
+            bower: function () {
+                return builder.build('{app}/bower_components');
+            },
             tmp: function () {
                 return builder.build('{tmp}');
             },
