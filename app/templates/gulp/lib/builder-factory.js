@@ -24,16 +24,7 @@ module.exports = function (paths, modules) {
             }
             return result;
         },
-        buildForModules: function () {
-            var i, j, result = [];
-            for (i = 0; i < modules.length; i += 1) {
-                for (j = 0; j < arguments.length; j += 1) {
-                    result.push(builder.build(arguments[j], modules[i]));
-                }
-            }
-            return result;
-        },
-        visitModules: function (factoryFn) {
+        visitTopLevelModules: function (factoryFn) {
             var i, result = [], item;
             for (i = 0; i < modules.length; i += 1) {
                 item = factoryFn(modules[i]);
@@ -42,21 +33,6 @@ module.exports = function (paths, modules) {
                 }
             }
             return result;
-        },
-        visitTopLevelModules: function (factoryFn, excludeRoot) {
-            var i, result = [], item;
-            for (i = 0; i < modules.length; i += 1) {
-                if (!(excludeRoot && this.isRootModule(modules[i]))) {
-                    item = factoryFn(modules[i]);
-                    if (item) {
-                        result.push(item);
-                    }
-                }
-            }
-            return result;
-        },
-        isRootModule: function (module) {
-            return module.moduleDir === '.';
         }
     };
     return builder;
