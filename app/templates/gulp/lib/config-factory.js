@@ -80,7 +80,11 @@ var configFactory = function (externalConfig) {
                 ]);
             },
             lintSrc: function () {
-                return this.src();
+                return _.flatten([
+                    pathsBuilder.build('{src}/*.module.js'),
+                    pathsBuilder.buildForTopLevelModules(
+                        '{src}/{moduleFile}', '{src}/{moduleDir}/**/*.module.js', '{src}/{moduleDir}/**/!(*spec|*mock).js')
+                ]);
             }
         },
         i18n: {
