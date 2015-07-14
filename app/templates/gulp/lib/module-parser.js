@@ -26,7 +26,7 @@ var glob = require('glob'),
 
 module.exports = {
     parseModules: function (basePath, libRegexp, mainModule) {
-        var moduleDirectories = glob.sync(libRegexp + '*/', {cwd: basePath}), modules = [], moduleName, moduleDirectory, module, moduleFile, joinFn = paths.posix.join || paths.join;
+        var moduleDirectories = glob.sync(libRegexp + '*/', {cwd: basePath}), modules = [], moduleName, moduleDirectory, module, moduleFile, joinFn = paths.posix ? paths.posix.join : paths.join;
         moduleDirectories = pushMainOnTopOfList(moduleDirectories, mainModule);
         for (var i = 0; i < moduleDirectories.length; i++) {
             moduleDirectory = moduleName = moduleDirectories[i];

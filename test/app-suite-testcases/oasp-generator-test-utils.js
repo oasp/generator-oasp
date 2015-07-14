@@ -45,7 +45,7 @@ module.exports = exports = {
     runGulpAndCallDone: function (gulpGoals, done, destDirectory) {
         destDirectory = destDirectory || this.testDirectory;
         var gulp = spawn('gulp', gulpGoals, {cwd: destDirectory}), logFromGulp = function (data) {
-            if (!process.env['log-gulp']) {
+            if (process.env['log-gulp']) {
                 console.log(data.toString('ascii').trim());
             }
         };
