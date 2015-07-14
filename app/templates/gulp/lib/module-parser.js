@@ -26,20 +26,20 @@ var glob = require('glob'),
 
 module.exports = {
     parseModules: function (basePath, libRegexp, mainModule) {
-        var moduleDirectories = glob.sync(libRegexp + '*/', {cwd: basePath}), modules = [], moduleName, moduleDirectory, module, moduleFile;
+        var moduleDirectories = glob.sync(libRegexp + '*/', {cwd: basePath}), modules = [], moduleName, moduleDirectory, module, moduleFile, joinFn = paths.posix.join || paths.join;
         moduleDirectories = pushMainOnTopOfList(moduleDirectories, mainModule);
         for (var i = 0; i < moduleDirectories.length; i++) {
             moduleDirectory = moduleName = moduleDirectories[i];
             moduleName = paths.basename(moduleDirectory);
-            moduleFile = paths.posix.join(moduleDirectory, moduleName + '.module.js');
+            moduleFile = joinFn(moduleDirectory, moduleName + '.module.js');
             module = {
                 name: moduleName,
                 moduleFile: moduleFile,
                 moduleDir: paths.dirname(moduleFile),
-                moduleAbsDir: paths.posix.join(basePath, moduleDirectory)
+                moduleAbsDir: joinFn(basePath, moduleDirectory)
             };
             if (fs.existsSync(paths.join(basePath, module.moduleFile))) {
-                module.ngModule = ngParseModule.parse(paths.join(basePath, module.moduleFile)).name
+                module.ngModule = ngParseModule.parse(paths.join(basePath, module.moduleFile)).name;
             }
             modules.push(module);
         }
