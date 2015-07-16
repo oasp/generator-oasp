@@ -1,6 +1,6 @@
 var configFactory = function (externalConfig) {
     'use strict';
-    var $s = require('string'), _ = require('lodash'),
+    var $s = require('string'), _ = require('lodash'), url = require('url'),
         paths = externalConfig.paths,
         modules = externalConfig.modules,
         builder = (function () {
@@ -53,6 +53,9 @@ var configFactory = function (externalConfig) {
         builder: builder,
         context: externalConfig.proxyContext,
         proxy: externalConfig.proxy + externalConfig.proxyContext,
+        proxyHostname: function() {
+            return url.parse(externalConfig.proxy).hostname;
+        }(),
         app: {
             src: function () {
                 return builder.build('{app}');
