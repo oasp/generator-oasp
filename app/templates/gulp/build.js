@@ -133,8 +133,7 @@ gulp.task('i18n', function () {
 
 gulp.task('fonts', function () {
     if (isProd()) {
-        return gulp.src($.mainBowerFiles())
-            .pipe($.filter('**/*.{eot,svg,ttf,woff}'))
+        return gulp.src(config.app.bower() + '/**/*.{eot,svg,ttf,woff,woff2}')
             .pipe($.flatten())
             .pipe(gulp.dest(config.app.dist() + '/fonts/'));
     }

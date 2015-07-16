@@ -6,5 +6,8 @@ branches:
     - master
     - development
 before_install:
+  - npm install -g npm@2
+  - npm install -g bower
+  - npm install -g gulp
   - currentfolder=${PWD##*/}
   - if [ "$currentfolder" != 'generator-oasp' ]; then cd .. && eval "mv $currentfolder generator-oasp" && cd generator-oasp; fi
