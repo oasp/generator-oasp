@@ -53,12 +53,15 @@ module.exports = function () {
                         'app/main/main.module.js',
                         'app/main/**/*.module.js',
                         'app/main/**/!(*spec|*mock).js',
+                        '.tmp/main/**/*.js' ,
                         'app/component-1/component-1.module.js',
                         'app/component-1/**/*.module.js',
                         'app/component-1/**/!(*spec|*mock).js',
+                        '.tmp/component-1/**/*.js' ,
                         'app/component-2/component-2.module.js',
                         'app/component-2/**/*.module.js',
-                        'app/component-2/**/!(*spec|*mock).js']);
+                        'app/component-2/**/!(*spec|*mock).js',
+                        '.tmp/component-2/**/*.js']);
                 });
                 it('should contain paths to test sources depending on modules', function () {
                     config.scripts.testSrc().should.eql([
@@ -77,15 +80,12 @@ module.exports = function () {
                         'app/main/main.module.js',
                         'app/main/**/*.module.js',
                         'app/main/**/!(*spec|*mock).js',
-                        '.tmp/main/**/*.js',
                         'app/component-1/component-1.module.js',
                         'app/component-1/**/*.module.js',
                         'app/component-1/**/!(*spec|*mock).js',
-                        '.tmp/component-1/**/*.js',
                         'app/component-2/component-2.module.js',
                         'app/component-2/**/*.module.js',
-                        'app/component-2/**/!(*spec|*mock).js',
-                        '.tmp/component-2/**/*.js']);
+                        'app/component-2/**/!(*spec|*mock).js']);
                 });
             });
         });
