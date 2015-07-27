@@ -23,23 +23,15 @@ module.exports = function () {
 
             describe('styles', function () {
                 it('should contain paths to main less files', function () {
-                    config.styles.src().should.eql([
-                        'app/main/main.less',
-                        'app/component-1/component-1.less',
-                        'app/component-2/component-2.less'
-                    ]);
+                    config.styles.src().should.eql('app/*.less');
                 });
                 it('should contain paths to all less files', function () {
-                    config.styles.allSrc().should.eql([
-                        'app/main/**/*.less',
-                        'app/component-1/**/*.less',
-                        'app/component-2/**/*.less'
-                    ]);
+                    config.styles.allSrc().should.eql('app/**/*.less');
                 });
             });
             describe('i18n', function () {
                 it('should build paths for i18n files', function () {
-                    config.i18n.src().should.eql([
+                    config.i18n.src().should.have.members([
                         'app/main/i18n/**/*.json',
                         'app/component-1/i18n/**/*.json',
                         'app/component-2/i18n/**/*.json'
@@ -48,7 +40,7 @@ module.exports = function () {
             });
             describe('scripts', function () {
                 it('should contain paths to js sources depending on modules', function () {
-                    config.scripts.src().should.eql([
+                    config.scripts.src().should.have.members([
                         'app/*.module.js',
                         'app/main/main.module.js',
                         'app/main/**/*.module.js',
@@ -64,7 +56,7 @@ module.exports = function () {
                         '.tmp/component-2/**/*.js']);
                 });
                 it('should contain paths to test sources depending on modules', function () {
-                    config.scripts.testSrc().should.eql([
+                    config.scripts.testSrc().should.have.members([
                         'app/*.mock.js',
                         'app/main/**/*.mock.js',
                         'app/component-1/**/*.mock.js',
@@ -75,7 +67,7 @@ module.exports = function () {
                         'app/component-2/**/*.spec.js']);
                 });
                 it('should contain paths for linting depending on modules', function () {
-                    config.scripts.lintSrc().should.eql([
+                    config.scripts.lintSrc().should.have.members([
                         'app/*.module.js',
                         'app/main/main.module.js',
                         'app/main/**/*.module.js',

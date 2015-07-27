@@ -9,6 +9,7 @@
         "app/component-2/dialog-b/dialog-b-inner.html",
         "app/component-2/dialog-b/dialog-b.tpl.html",
         "app/index.html",
+        "app/app.less",
         "app/main/app/app.controller.js",
         "app/main/layout/browsehappy.html",
         "app/main/layout/container.html",

@@ -15,6 +15,7 @@ describe('oasp:app', function () {
         it('creates files', function () {
             assert.file([
                 'app/sample.module.js',
+                'app/sample.less',
                 'app/sample.module.spec.js'
             ]);
         });
@@ -43,6 +44,7 @@ describe('oasp:app', function () {
         it('creates files', function () {
             assert.file([
                 'app/sample-app-name.module.js',
+                'app/sample-app-name.less',
                 'app/sample-app-name.module.spec.js'
             ]);
         });
@@ -71,6 +73,7 @@ describe('oasp:app', function () {
         it('creates files', function () {
             assert.file([
                 'app/sample-app-name.module.js',
+                'app/sample-app-name.less',
                 'app/sample-app-name.module.spec.js'
             ]);
         });
