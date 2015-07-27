@@ -1,4 +1,4 @@
-angular.module('app.main', ['ngRoute', 'app.main.templates'])
+angular.module('<%- props.appName %>.main', ['ngRoute', '<%- props.appName %>.main.templates'])
     .config(function ($routeProvider) {
         'use strict';
         $routeProvider

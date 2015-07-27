@@ -13,7 +13,7 @@
     <title></title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- build:css({.tmp,app}) css/oasp.css -->
+    <!-- build:css({.tmp,app}) css/<%- props.appTrainName %>.css -->
     <!-- inject:css -->
     <!-- css files will be automaticaly insert here -->
     <!-- endinject -->
@@ -24,7 +24,7 @@
     <script src="../bower_components/respond/respond.min.js"></script>
     <!-- endbuild -->
 </head>
-<body data-ng-app="app" data-ng-controller="AppCntl">
+<body data-ng-app="<%- props.appName %>" data-ng-controller="AppCntl">
 <!-- process:include main/layout/browsehappy.html --><!-- /process -->
 <!-- process:include main/layout/navbar.html --><!-- /process -->
 <!-- process:include main/layout/container.html --><!-- /process -->
@@ -34,7 +34,7 @@
 <!-- endbower -->
 <!-- endbuild -->
 
-<!-- build:jsApp({.tmp,app}) js/app.js -->
+<!-- build:jsApp({.tmp,app}) js/<%- props.appTrainName %>.js -->
 <!-- inject:js -->
 <!-- js files will be automatically insert here -->
 <!-- endinject -->

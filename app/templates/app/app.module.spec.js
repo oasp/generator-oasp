@@ -1,4 +1,4 @@
-describe('\'app\' module', function () {
+describe('\'<%- props.appName %>\' module', function () {
     'use strict';
     var locationProvider;
 
@@ -7,7 +7,7 @@ describe('\'app\' module', function () {
             locationProvider = $locationProvider;
             spyOn(locationProvider, 'html5Mode').and.callThrough();
         });
-        module('app');
+        module('<%- props.appName %>');
     });
 
     // This is necessary to trigger loading the modules above; use it to inject services once they are needed

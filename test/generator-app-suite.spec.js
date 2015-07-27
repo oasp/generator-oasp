@@ -8,7 +8,7 @@ var path = require('path'),
         require('./app-suite-testcases/simple/simple.js'),
         require('./app-suite-testcases/config-factory/config-factory.js')
     ];
-describe('oasp:app', function () {
+xdescribe('oasp:app', function () {
     before(function (done) {
         //for development to skip npm install and save time
         if (process.env['no-generate']) {
