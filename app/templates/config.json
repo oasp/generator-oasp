@@ -8,7 +8,7 @@
     },
     "styles": {
         "type": "less",
-        "output": "css/oasp.css"
+        "output": "css/<%- props.appTrainName %>.css"
     },
     "proxy": {
         "baseUrl": "http://localhost:8081",

@@ -1,4 +1,4 @@
-describe('\'app.main\' module', function () {
+describe('\'<%- props.appName %>.main\' module', function () {
     'use strict';
     var routeProvider;
 
@@ -8,7 +8,7 @@ describe('\'app.main\' module', function () {
             spyOn(routeProvider, 'when').and.callThrough();
             spyOn(routeProvider, 'otherwise').and.callThrough();
         });
-        module('app.main');
+        module('<%- props.appName %>.main');
     });
 
     // This is necessary to trigger loading the modules above; use it to inject services once they are needed
