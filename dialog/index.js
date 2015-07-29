@@ -21,29 +21,36 @@ module.exports = yeoman.generators.Base.extend({
         });
     },
 
-    // TODO: refactor
     initializing: function () {
+
+        var mainModuleDirectory,
+            destinationModulePath,
+            destinationDirectory,
+            mainModulePath;
+
         this.canCreateDialog = true;
 
-        this.currentConfig = this.config.getAll();
-
-        // module name given - create dialog in module appMainModule/moduleName
         if (this.moduleName) {
-            // if module does not exist - create it
+            // create dialog in the mainApp/moduleName dir, if not exist then call module generator to generate it
 
-            if (!this.fs.exists(paths.join(this.destinationPath(), this.currentConfig.appPath, this.moduleName, this.moduleName) + 'module.js')) {
+            mainModuleDirectory = oaspUtil.findMainModuleDirectory(this);
+            destinationModulePath = paths.join(mainModuleDirectory, this.moduleName, this.moduleName) + '.module.js';
+            mainModulePath = oaspUtil.findMainModulePath(this);
+            this.angularModuleName = ngParseModule.parse(mainModulePath).name + '.' + oaspUtil.angularNamesBuilder.moduleName2(this.moduleName);
+            if (!this.fs.exists(destinationModulePath)) {
                 this.env.cwd = this.destinationPath();
                 this.composeWith('oasp:module', {args: [this.moduleName]});
             }
-            this.pathPrefix = paths.join(this.destinationPath(), this.currentConfig.appPath, this.moduleName);
+            destinationDirectory = paths.join(mainModuleDirectory, this.moduleName);
         }
-        // module name not given - find the nearest one and get it's name, otherwise throw error
         else {
-            this.destinationPaths = oaspUtil.resolveParentModuleAndDestinationDirectoryPath(this);
-            if (this.destinationPaths) {
-                var module = ngParseModule.parse(this.destinationPaths.moduleFilePath);
-                this.moduleName = module.name;
-                this.pathPrefix = this.destinationPaths.destinationDirectory;
+            // create dialog in the current directory in the nearest module
+
+            destinationModulePath = oaspUtil.findClosestModulePath(this);
+            if (destinationModulePath) {
+                var module = ngParseModule.parse(destinationModulePath);
+                this.angularModuleName = module.name;
+                destinationDirectory = oaspUtil.findDestinationDirectory(this);
             }
             else {
                 this.log(chalk.red('-> Can\'t find the main application module.'));
@@ -53,17 +60,18 @@ module.exports = yeoman.generators.Base.extend({
 
         if (this.canCreateDialog) {
             this.controllerName = oaspUtil.angularNamesBuilder.controllerName(this.dialogName);
-            this.controllerPath = paths.join(this.pathPrefix, this.dialogName, this.dialogName + '.controller.js');
-            this.controllerSpecPath = paths.join(this.pathPrefix, this.dialogName, this.dialogName + '.controller.spec.js');
-            this.dialogPath = paths.join(this.pathPrefix, this.dialogName, this.dialogName + '.tpl.html');
+            this.controllerPath = paths.join(destinationDirectory, this.dialogName, this.dialogName + '.controller.js');
+            this.controllerSpecPath = paths.join(destinationDirectory, this.dialogName, this.dialogName + '.controller.spec.js');
+            this.dialogPath = paths.join(destinationDirectory, this.dialogName, this.dialogName + '.tpl.html');
 
-            this.log(chalk.green('-> Generating dialog with controller in module: ' + this.moduleName));
+            this.log(chalk.green('-> Generating dialog with controller in module: ' + this.angularModuleName));
         }
     },
     writing: {
         saveDialogTemplate: function () {
             if (this.canCreateDialog) {
                 this.fs.copyTpl(this.templatePath('dialog.html'), this.dialogPath, this);
+                this.log(this.dialogPath);
             }
         },
         saveDialogControllerAndSpecFile: function () {

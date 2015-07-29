@@ -18,23 +18,23 @@ module.exports = yeoman.generators.Base.extend({
 
     initializing: function () {
 
-        this.canCreateModule = true;
+        var destinationModulePath = oaspUtil.findClosestModulePath(this),
+            destinationDirectory = oaspUtil.findDestinationDirectory(this);
 
-        var destinationModulePath = oaspUtil.findClosestModulePath(this);
-        var destinationDirectory = oaspUtil.findDestinationDirectory(this);
+        this.canCreateModule = true;
 
         if (destinationModulePath) {
             this.parsedDestinationModule = ngParseModule.parse(destinationModulePath);
-            if (this.parsedDestinationModule.dependencies.modules.indexOf(this.parsedDestinationModule.name) < 0) {
+            this.newModuleName = this.parsedDestinationModule.name + '.' + oaspUtil.angularNamesBuilder.moduleName2(this.moduleName);
+            if (this.parsedDestinationModule.dependencies.modules.indexOf( this.newModuleName) < 0) {
                 this.newModuleDirectoryPath = paths.join(destinationDirectory, this.moduleName);
-                this.newModuleName = this.parsedDestinationModule.name + '.' + oaspUtil.angularNamesBuilder.moduleName2(this.moduleName);
                 this.newModuleFilePath = paths.join(this.newModuleDirectoryPath, paths.basename(this.newModuleDirectoryPath)) + '.module.js';
                 this.newLessFilePath = paths.join(this.newModuleDirectoryPath, paths.basename(this.newModuleDirectoryPath)) + '.less';
 
                 this.log(chalk.green('-> Generating module in directory: ' + this.newModuleDirectoryPath));
             }
             else {
-                this.log(chalk.red('-> Module ' + this.parsedDestinationModule.name + ' already injected in the parent module defined in the ' + destinationModulePath + ' file.'));
+                this.log(chalk.red('-> Module ' + this.newModuleName + ' already injected in the parent module defined in the ' + destinationModulePath + ' file.'));
                 this.canCreateModule = false;
             }
         }

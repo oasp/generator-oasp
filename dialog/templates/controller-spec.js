@@ -1,7 +1,7 @@
 describe('<%= controllerName %> tests', function () {
     'use strict';
 
-    beforeEach(module('<%= moduleName %>'));
+    beforeEach(module('<%= angularModuleName %>'));
     beforeEach(inject(function ($controller) {
         $controller('<%= controllerName %>', {});
     }));

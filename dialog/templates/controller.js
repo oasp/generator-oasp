@@ -1,4 +1,4 @@
-angular.module('<%= moduleName %>')
+angular.module('<%= angularModuleName %>')
     .controller('<%= controllerName %>', function () {
         // put controller code here
     });

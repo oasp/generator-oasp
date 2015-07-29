@@ -110,6 +110,16 @@ module.exports = {
         }
         return null;
     },
+    findMainModulePath: function(generator){
+        var mainModulePath = generator.config.getAll().appModulePath;
+        if (generator.fs.exists(mainModulePath)) {
+            return mainModulePath;
+        }
+        return null;
+    },
+    findMainModuleDirectory: function(generator){
+        return paths.dirname(generator.config.getAll().appModulePath);
+    },
     findClosestModulePath: function (generator) {
         var resolveModuleFilePath = function (currentPath) {
             return paths.join(currentPath, paths.basename(currentPath)) + '.module.js';
@@ -120,10 +130,7 @@ module.exports = {
             rootPath = generator.destinationPath();
 
         if (currentPath === rootPath) {
-            var mainModulePath = generator.config.getAll().appModulePath;
-            if (generator.fs.exists(mainModulePath)) {
-                return mainModulePath;
-            }
+            return this.findMainModulePath(generator);
         }
 
         while (currentPath !== rootPath) {
@@ -140,7 +147,7 @@ module.exports = {
             rootPath = generator.destinationPath();
 
         if (currentPath === rootPath){
-            return paths.dirname(generator.config.getAll().appModulePath);
+            return this.findMainModuleDirectory(generator);
         }
 
         return currentPath;
