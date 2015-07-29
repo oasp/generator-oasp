@@ -1,3 +1,4 @@
+var paths = require('path');
 var _ = require('underscore');
 _.str = require('underscore.string');
 
@@ -59,6 +60,10 @@ module.exports = {
             'use strict';
             return _.str.camelize(controller);
         },
+        // TODO: rename this method after moduleName is not used and deleted
+        moduleName2: function (module) {
+            return _.str.camelize(module);
+        },
         // TODO: remove
         moduleName: function (config, module) {
             'use strict';
@@ -71,5 +76,39 @@ module.exports = {
             }
             return _.str.camelize(moduleName);
         }
+    },
+    resolveParentModuleAndDestinationDirectoryPath: function (generator) {
+        var resolveModuleFilePath = function (currentPath) {
+            return paths.join(currentPath, paths.basename(currentPath)) + '.module.js';
+        };
+
+        var destinationPath = generator.env.cwd,
+            currentPath = destinationPath,
+            moduleFilePath = resolveModuleFilePath(currentPath),
+            rootPath = generator.destinationPath();
+
+        if (currentPath === rootPath || currentPath === rootPath) {
+            var mainModulePath = generator.config.getAll().appModulePath;
+
+            if (generator.fs.exists(mainModulePath)) {
+                generator.log(mainModulePath);
+                return {
+                    moduleFilePath: mainModulePath,
+                    destinationDirectory: paths.dirname(mainModulePath)
+                };
+            }
+        }
+
+        while (currentPath !== rootPath) {
+            if (generator.fs.exists(moduleFilePath)) {
+                return {
+                    moduleFilePath: moduleFilePath,
+                    destinationDirectory: destinationPath
+                };
+            }
+            currentPath = paths.dirname(currentPath);
+            moduleFilePath = resolveModuleFilePath(currentPath);
+        }
+        return null;
     }
 };

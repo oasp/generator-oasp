@@ -2,6 +2,7 @@
 var yeoman = require('yeoman-generator');
 var oaspUtil = require('../utils.js');
 var chalk = require('chalk');
+var paths = require('path');
 var ngParseModule = require('ng-parse-module');
 
 module.exports = yeoman.generators.Base.extend({
@@ -15,44 +16,53 @@ module.exports = yeoman.generators.Base.extend({
         });
     },
 
+    // TODO: refactor
     initializing: function () {
-        this.currentConfig = this.config.getAll();
-        this.module = oaspUtil.expandModule(this.moduleName);
-        this.angularModuleName = oaspUtil.angularNamesBuilder.moduleName(this.currentConfig, this.module);
-        this.modulePath = oaspUtil.pathBuilder.buildPath('{app}/{module}/{submodule}.module.js', this.currentConfig, this.module);
-        this.lessPath = oaspUtil.pathBuilder.buildPath('{app}/{module}/{submodule}.less', this.currentConfig, this.module);
-        this.log('-> Generating module ' + this.angularModuleName + '.');
+
+        this.destinationPaths = oaspUtil.resolveParentModuleAndDestinationDirectoryPath(this);
+        this.canCreateModule = true;
+
+        if (this.destinationPaths) {
+            var moduleAlreadyInjected;
+
+            this.newModuleDirectoryPath = paths.join(this.destinationPaths.destinationDirectory, this.moduleName);
+            this.newModuleFilePath = paths.join(this.newModuleDirectoryPath, paths.basename(this.newModuleDirectoryPath)) + '.module.js';
+            this.newLessFilePath = paths.join(this.newModuleDirectoryPath, paths.basename(this.newModuleDirectoryPath)) + '.less';
+            this.parsedParentModule = ngParseModule.parse(this.destinationPaths.moduleFilePath);
+            // TODO: rename method
+            this.newModuleName = this.parsedParentModule.name + '.' + oaspUtil.angularNamesBuilder.moduleName2(this.moduleName);
+
+            moduleAlreadyInjected = this.parsedParentModule.dependencies.modules.indexOf(this.newModuleName) >= 0;
+
+            if (moduleAlreadyInjected) {
+                this.log(chalk.red('-> ' + this.newModuleName + ' already injected in the parent module defined in the ' + this.destinationPaths.moduleFilePath + ' file.'));
+                this.canCreateModule = false;
+            }
+        }
+        else {
+            this.log(chalk.red('-> Can\'t find the main application module.'));
+            this.canCreateModule = false;
+        }
+
+        if(this.canCreateModule){
+            this.log(chalk.green('-> Generating module in directory: ' + this.newModuleDirectoryPath));
+        }
     },
     writing: {
-        injectModuleIntoApp: function () {
-            if (this.fs.exists(this.currentConfig.appModulePath)) {
-                var results = ngParseModule.parse(this.currentConfig.appModulePath);
-                if (results.dependencies.modules.indexOf(this.angularModuleName) < 0) {
-                    results.dependencies.modules.push(this.angularModuleName);
-                    results.save();
-                }
-            }
-            else {
-                this.log(chalk.red('-> App module file ' + this.currentConfig.appModulePath + ' not exists!'));
+        injectModuleIntoParentModule: function () {
+            if (this.canCreateModule) {
+                this.parsedParentModule.dependencies.modules.push(this.newModuleName);
+                this.parsedParentModule.save();
             }
         },
         saveModuleFile: function () {
-            var context = {
-                moduleName: this.angularModuleName
-            };
-            if (!this.fs.exists(this.modulePath)) {
-                this.fs.copyTpl(this.templatePath('module.js'), this.destinationPath(this.modulePath), context);
-            }
-            else {
-                this.log(chalk.red('-> Module ' + this.angularModuleName + ' already exists!'));
+            if (this.canCreateModule) {
+                this.fs.copyTpl(this.templatePath('module.js'), this.newModuleFilePath, {moduleName: this.newModuleName});
             }
         },
         saveLessFile: function () {
-            if (!this.fs.exists(this.lessPath)) {
-                this.fs.copyTpl(this.templatePath('module.less'), this.destinationPath(this.lessPath));
-            }
-            else {
-                this.log(chalk.red('-> Less for module ' + this.moduleName + ' already exists!'));
+            if (this.canCreateModule) {
+                this.fs.copyTpl(this.templatePath('module.less'), this.newLessFilePath);
             }
         }
     }
