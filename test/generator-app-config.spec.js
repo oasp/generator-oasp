@@ -8,7 +8,7 @@ describe('oasp:app', function () {
     describe('simple module name', function () {
         before(function (done) {
             helpers.run(path.join(__dirname, '../app'))
-                .withOptions({ 'skip-install': true, 'appName': 'sample' })
+                .withOptions({ 'skip-install': true, 'app-name': 'sample' })
                 .on('end', done);
         });
 
@@ -37,7 +37,7 @@ describe('oasp:app', function () {
     describe('camelCase module name', function () {
         before(function (done) {
             helpers.run(path.join(__dirname, '../app'))
-                .withOptions({ 'skip-install': true, 'appName': 'sampleAppName' })
+                .withOptions({ 'skip-install': true, 'app-name': 'sampleAppName' })
                 .on('end', done);
         });
 
@@ -66,7 +66,7 @@ describe('oasp:app', function () {
     describe('train-case module name', function () {
         before(function (done) {
             helpers.run(path.join(__dirname, '../app'))
-                .withOptions({ 'skip-install': true, 'appName': 'sample-app-name' })
+                .withOptions({ 'skip-install': true, 'app-name': 'sample-app-name' })
                 .on('end', done);
         });
 

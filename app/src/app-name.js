@@ -3,8 +3,8 @@ _.str = require('underscore.string');
 
 module.exports = function (Generator) {
     Generator.prototype.fixAppName = function () {
-        this.props.appName = _.str.camelize(this.options.appName);
-        this.props.appTrainName = _.str.dasherize(_.str.underscored(this.options.appName));
+        this.props.appName = _.str.camelize(this.options['app-name']);
+        this.props.appTrainName = _.str.dasherize(_.str.underscored(this.options['app-name']));
     };
     Generator.prototype.fixTempateFileNames = function () {
         this.templateFiles['app/app.module.js'] = 'app/' + this.props.appTrainName + '.module.js';

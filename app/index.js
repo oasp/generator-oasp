@@ -7,6 +7,9 @@ var Generator = yeoman.generators.Base.extend({
 
     constructor: function () {
         yeoman.generators.Base.apply(this, arguments);
+
+        require('./src/options.js')(this);
+
         this.props = {};
     },
 
@@ -15,8 +18,6 @@ var Generator = yeoman.generators.Base.extend({
         this.log(yosay('Welcome to the impeccable ' + chalk.red('OASP') + ' generator!'));
     }
 });
-
-require('./src/options.js')(Generator);
 
 require('./src/files.js')(Generator);
 require('./src/app-name.js')(Generator);

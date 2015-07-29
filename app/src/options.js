@@ -1,11 +1,8 @@
 module.exports = function (Generator) {
-
-    Generator.prototype.defineOptions = function () {
-        this.option('appName', {
-            type: String,
-            required: true,
-            desc: 'App name',
-            defaults: 'app'
-        });
-    };
+    Generator.option('app-name', {
+        type: String,
+        required: true,
+        desc: 'App name, also used as angular module name',
+        defaults: 'app'
+    });
 };
