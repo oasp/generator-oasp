@@ -87,11 +87,10 @@ module.exports = {
             moduleFilePath = resolveModuleFilePath(currentPath),
             rootPath = generator.destinationPath();
 
-        if (currentPath === rootPath || currentPath === rootPath) {
+        if (currentPath === rootPath) {
             var mainModulePath = generator.config.getAll().appModulePath;
 
             if (generator.fs.exists(mainModulePath)) {
-                generator.log(mainModulePath);
                 return {
                     moduleFilePath: mainModulePath,
                     destinationDirectory: paths.dirname(mainModulePath)
@@ -105,6 +104,31 @@ module.exports = {
                     moduleFilePath: moduleFilePath,
                     destinationDirectory: destinationPath
                 };
+            }
+            currentPath = paths.dirname(currentPath);
+            moduleFilePath = resolveModuleFilePath(currentPath);
+        }
+        return null;
+    },
+    findClosestModulePath: function (generator) {
+        var resolveModuleFilePath = function (currentPath) {
+            return paths.join(currentPath, paths.basename(currentPath)) + '.module.js';
+        };
+
+        var currentPath = generator.env.cwd,
+            moduleFilePath = resolveModuleFilePath(currentPath),
+            rootPath = generator.destinationPath();
+
+        if (currentPath === rootPath) {
+            var mainModulePath = generator.config.getAll().appModulePath;
+            if (generator.fs.exists(mainModulePath)) {
+                return mainModulePath;
+            }
+        }
+
+        while (currentPath !== rootPath) {
+            if (generator.fs.exists(moduleFilePath)) {
+                return moduleFilePath;
             }
             currentPath = paths.dirname(currentPath);
             moduleFilePath = resolveModuleFilePath(currentPath);
