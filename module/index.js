@@ -2,67 +2,63 @@
 var yeoman = require('yeoman-generator');
 var oaspUtil = require('../utils.js');
 var chalk = require('chalk');
+var paths = require('path');
 var ngParseModule = require('ng-parse-module');
 
 module.exports = yeoman.generators.Base.extend({
 
-  constructor: function () {
-    yeoman.generators.Base.apply(this, arguments);
-    this.argument('moduleName', {
-      type: String,
-      required: true,
-      desc: 'Module name'
-    });
-  },
+    constructor: function () {
+        yeoman.generators.Base.apply(this, arguments);
+        this.argument('moduleName', {
+            type: String,
+            required: true,
+            desc: 'Module name'
+        });
+    },
 
-  initializing: function () {
-    this.currentConfig = this.config.getAll();
-    this.module = oaspUtil.expandModule(this.moduleName);
-    this.angularModuleName = oaspUtil.angularNamesBuilder.moduleName(this.currentConfig, this.module);
-    this.modulePath = oaspUtil.pathBuilder.buildPath('{app}/{module}/js/{submodule}.module.js', this.currentConfig, this.module);
-    this.lessPath = oaspUtil.pathBuilder.buildPath('{app}/{module}/css/{submodule}.less', this.currentConfig, this.module);
-    this.log('-> Generating module ' + this.angularModuleName + '.');
-  },
-  writing: {
-    injectModuleIntoApp: function () {
-      if (this.fs.exists(this.currentConfig.appModulePath)) {
-        var results = ngParseModule.parse(this.currentConfig.appModulePath);
-        if (results.dependencies.modules.indexOf(this.angularModuleName) < 0) {
-          results.dependencies.modules.push(this.angularModuleName);
-          results.save();
+    initializing: function () {
+
+        var destinationModulePath = oaspUtil.findClosestModulePath(this),
+            destinationDirectory = oaspUtil.findDestinationDirectory(this);
+
+        this.canCreateModule = true;
+
+        if (destinationModulePath) {
+            this.parsedDestinationModule = ngParseModule.parse(destinationModulePath);
+            this.newModuleName = this.parsedDestinationModule.name + '.' + oaspUtil.angularNamesBuilder.moduleName2(this.moduleName);
+            if (this.parsedDestinationModule.dependencies.modules.indexOf( this.newModuleName) < 0) {
+                this.newModuleDirectoryPath = paths.join(destinationDirectory, this.moduleName);
+                this.newModuleFilePath = paths.join(this.newModuleDirectoryPath, paths.basename(this.newModuleDirectoryPath)) + '.module.js';
+                this.newLessFilePath = paths.join(this.newModuleDirectoryPath, paths.basename(this.newModuleDirectoryPath)) + '.less';
+
+                this.log(chalk.green('-> Generating module in directory: ' + this.newModuleDirectoryPath));
+            }
+            else {
+                this.log(chalk.red('-> Module ' + this.newModuleName + ' already injected in the parent module defined in the ' + destinationModulePath + ' file.'));
+                this.canCreateModule = false;
+            }
         }
-      } else {
-        this.log(chalk.red('-> App module file ' + this.currentConfig.appModulePath + ' not exists!'));
-      }
+        else {
+            this.log(chalk.red('-> Can\'t find the main application module.'));
+            this.canCreateModule = false;
+        }
     },
-    saveModuleFile: function () {
-      var context = {
-        moduleName: this.angularModuleName
-      };
-      if (!this.fs.exists(this.modulePath)) {
-        this.fs.copyTpl(this.templatePath('module.js'), this.destinationPath(this.modulePath), context);
-      } else {
-        this.log(chalk.red('-> Module ' + this.angularModuleName + ' already exists!'));
-      }
-    },
-    saveLessFile: function () {
-      if (!this.fs.exists(this.lessPath)) {
-        this.fs.copyTpl(this.templatePath('module.less'), this.destinationPath(this.lessPath));
-      } else {
-        this.log(chalk.red('-> Less for module ' + this.moduleName + ' already exists!'));
-      }
-    },
-    injectModuleIntoConfig: function () {
-      var config = {}, done = this.async();
-      if (this.fs.exists('config.json')) {
-        config = this.fs.readJSON('config.json');
-      }
-      config.modules = config.modules || [];
-      if (config.modules.indexOf(this.moduleName) < 0) {
-        config.modules.push(this.moduleName);
-      }
-      this.fs.writeJSON('config.json', config);
-      this.fs.commit(done);
+    writing: {
+        injectModuleIntoParentModule: function () {
+            if (this.canCreateModule) {
+                this.parsedDestinationModule.dependencies.modules.push(this.newModuleName);
+                this.parsedDestinationModule.save();
+            }
+        },
+        saveModuleFile: function () {
+            if (this.canCreateModule) {
+                this.fs.copyTpl(this.templatePath('module.js'), this.newModuleFilePath, {moduleName: this.newModuleName});
+            }
+        },
+        saveLessFile: function () {
+            if (this.canCreateModule) {
+                this.fs.copyTpl(this.templatePath('module.less'), this.newLessFilePath);
+            }
+        }
     }
-  }
 });
