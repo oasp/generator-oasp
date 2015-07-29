@@ -134,5 +134,15 @@ module.exports = {
             moduleFilePath = resolveModuleFilePath(currentPath);
         }
         return null;
+    },
+    findDestinationDirectory: function(generator){
+        var currentPath = generator.env.cwd,
+            rootPath = generator.destinationPath();
+
+        if (currentPath === rootPath){
+            return paths.dirname(generator.config.getAll().appModulePath);
+        }
+
+        return currentPath;
     }
 };

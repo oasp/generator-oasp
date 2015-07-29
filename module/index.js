@@ -16,26 +16,25 @@ module.exports = yeoman.generators.Base.extend({
         });
     },
 
-    // TODO: refactor
     initializing: function () {
 
-        this.destinationPaths = oaspUtil.resolveParentModuleAndDestinationDirectoryPath(this);
         this.canCreateModule = true;
 
-        if (this.destinationPaths) {
-            var moduleAlreadyInjected;
+        var destinationModulePath = oaspUtil.findClosestModulePath(this);
+        var destinationDirectory = oaspUtil.findDestinationDirectory(this);
 
-            this.newModuleDirectoryPath = paths.join(this.destinationPaths.destinationDirectory, this.moduleName);
-            this.newModuleFilePath = paths.join(this.newModuleDirectoryPath, paths.basename(this.newModuleDirectoryPath)) + '.module.js';
-            this.newLessFilePath = paths.join(this.newModuleDirectoryPath, paths.basename(this.newModuleDirectoryPath)) + '.less';
-            this.parsedParentModule = ngParseModule.parse(this.destinationPaths.moduleFilePath);
-            // TODO: rename method
-            this.newModuleName = this.parsedParentModule.name + '.' + oaspUtil.angularNamesBuilder.moduleName2(this.moduleName);
+        if (destinationModulePath) {
+            this.parsedDestinationModule = ngParseModule.parse(destinationModulePath);
+            if (this.parsedDestinationModule.dependencies.modules.indexOf(this.parsedDestinationModule.name) < 0) {
+                this.newModuleDirectoryPath = paths.join(destinationDirectory, this.moduleName);
+                this.newModuleName = this.parsedDestinationModule.name + '.' + oaspUtil.angularNamesBuilder.moduleName2(this.moduleName);
+                this.newModuleFilePath = paths.join(this.newModuleDirectoryPath, paths.basename(this.newModuleDirectoryPath)) + '.module.js';
+                this.newLessFilePath = paths.join(this.newModuleDirectoryPath, paths.basename(this.newModuleDirectoryPath)) + '.less';
 
-            moduleAlreadyInjected = this.parsedParentModule.dependencies.modules.indexOf(this.newModuleName) >= 0;
-
-            if (moduleAlreadyInjected) {
-                this.log(chalk.red('-> ' + this.newModuleName + ' already injected in the parent module defined in the ' + this.destinationPaths.moduleFilePath + ' file.'));
+                this.log(chalk.green('-> Generating module in directory: ' + this.newModuleDirectoryPath));
+            }
+            else {
+                this.log(chalk.red('-> Module ' + this.parsedDestinationModule.name + ' already injected in the parent module defined in the ' + destinationModulePath + ' file.'));
                 this.canCreateModule = false;
             }
         }
@@ -43,16 +42,12 @@ module.exports = yeoman.generators.Base.extend({
             this.log(chalk.red('-> Can\'t find the main application module.'));
             this.canCreateModule = false;
         }
-
-        if(this.canCreateModule){
-            this.log(chalk.green('-> Generating module in directory: ' + this.newModuleDirectoryPath));
-        }
     },
     writing: {
         injectModuleIntoParentModule: function () {
             if (this.canCreateModule) {
-                this.parsedParentModule.dependencies.modules.push(this.newModuleName);
-                this.parsedParentModule.save();
+                this.parsedDestinationModule.dependencies.modules.push(this.newModuleName);
+                this.parsedDestinationModule.save();
             }
         },
         saveModuleFile: function () {
