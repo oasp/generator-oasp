@@ -17,7 +17,7 @@ module.exports = yeoman.generators.Base.extend({
         this.appPath = 'app';
 
         if (this.isCalledFromRoot) {
-            this.targetPartentModule = sharedUtils.moduleFinder.findAppModule(this.destinationPath(), 'app');
+            this.targetPartentModule = sharedUtils.moduleFinder.findAppModule(this.destinationPath(), this.appPath);
             this.targetBasePath = this.destinationPath(this.appPath);
         } else {
             this.targetPartentModule = sharedUtils.moduleFinder.findClosestModule(this.destinationPath(), this.env.cwd);
