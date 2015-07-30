@@ -1,9 +1,8 @@
 'use strict';
 var yeoman = require('yeoman-generator');
-var oaspUtil = require('../utils.js');
+var sharedUtils = require('../shared-utils.js');
 var chalk = require('chalk');
 var paths = require('path');
-var ngParseModule = require('ng-parse-module');
 
 module.exports = yeoman.generators.Base.extend({
 
@@ -14,51 +13,36 @@ module.exports = yeoman.generators.Base.extend({
             required: true,
             desc: 'Module name'
         });
-    },
+        this.isCalledFromRoot = sharedUtils.isCalledFromRoot(this.destinationPath(), this.env.cwd);
+        this.appPath = 'app';
 
-    initializing: function () {
-
-        var destinationModulePath = oaspUtil.findClosestModulePath(this),
-            destinationDirectory = oaspUtil.findDestinationDirectory(this);
-
-        this.canCreateModule = true;
-
-        if (destinationModulePath) {
-            this.parsedDestinationModule = ngParseModule.parse(destinationModulePath);
-            this.newModuleName = this.parsedDestinationModule.name + '.' + oaspUtil.angularNamesBuilder.moduleName2(this.moduleName);
-            if (this.parsedDestinationModule.dependencies.modules.indexOf( this.newModuleName) < 0) {
-                this.newModuleDirectoryPath = paths.join(destinationDirectory, this.moduleName);
-                this.newModuleFilePath = paths.join(this.newModuleDirectoryPath, paths.basename(this.newModuleDirectoryPath)) + '.module.js';
-                this.newLessFilePath = paths.join(this.newModuleDirectoryPath, paths.basename(this.newModuleDirectoryPath)) + '.less';
-
-                this.log(chalk.green('-> Generating module in directory: ' + this.newModuleDirectoryPath));
-            }
-            else {
-                this.log(chalk.red('-> Module ' + this.newModuleName + ' already injected in the parent module defined in the ' + destinationModulePath + ' file.'));
-                this.canCreateModule = false;
-            }
+        if (this.isCalledFromRoot) {
+            this.targetPartentModule = sharedUtils.moduleFinder.findAppModule(this.destinationPath(), 'app');
+            this.targetBasePath = this.destinationPath(this.appPath);
+        } else {
+            this.targetPartentModule = sharedUtils.moduleFinder.findClosestModule(this.destinationPath(), this.env.cwd);
+            this.targetBasePath = this.env.cwd;
         }
-        else {
-            this.log(chalk.red('-> Can\'t find the main application module.'));
-            this.canCreateModule = false;
+        if (this.targetPartentModule === null) {
+            this.env.error(chalk.red('-> Can\'t find parent module.'));
         }
+
+        this.targetModuleName = sharedUtils.nameBuilder.ngModuleName(this.targetPartentModule.parsedModule.name, this.moduleName);
+        this.targetFileName = sharedUtils.nameBuilder.trainModuleName(this.moduleName);
     },
     writing: {
         injectModuleIntoParentModule: function () {
-            if (this.canCreateModule) {
-                this.parsedDestinationModule.dependencies.modules.push(this.newModuleName);
-                this.parsedDestinationModule.save();
+            if (this.targetPartentModule.parsedModule.dependencies.modules.indexOf(this.targetModuleName) < 0) {
+                this.targetPartentModule.parsedModule.dependencies.modules.push(this.targetModuleName);
+                this.log('Injecting ' + chalk.green(this.targetModuleName) + ' into ' + chalk.green(this.targetPartentModule.fileName));
+                this.targetPartentModule.parsedModule.save();
             }
         },
         saveModuleFile: function () {
-            if (this.canCreateModule) {
-                this.fs.copyTpl(this.templatePath('module.js'), this.newModuleFilePath, {moduleName: this.newModuleName});
-            }
+            this.fs.copyTpl(this.templatePath('module.js'), paths.join(this.targetBasePath, this.targetFileName, this.targetFileName + '.module.js'), this);
         },
         saveLessFile: function () {
-            if (this.canCreateModule) {
-                this.fs.copyTpl(this.templatePath('module.less'), this.newLessFilePath);
-            }
+            this.fs.copyTpl(this.templatePath('module.less'), paths.join(this.targetBasePath, this.targetFileName, this.targetFileName + '.less'), this);
         }
     }
 });

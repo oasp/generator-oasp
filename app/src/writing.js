@@ -15,6 +15,9 @@ module.exports = function (Generator) {
             );
         });
     };
+    Generator.prototype.writeYeomanConfig = function () {
+        this.config.save();
+    };
     Generator.prototype.generateDependencies = function () {
         this.installDependencies({
             skipInstall: this.options['skip-install']
