@@ -34,7 +34,7 @@ module.exports = yeoman.generators.Base.extend({
         injectModuleIntoParentModule: function () {
             if (this.targetPartentModule.parsedModule.dependencies.modules.indexOf(this.targetModuleName) < 0) {
                 this.targetPartentModule.parsedModule.dependencies.modules.push(this.targetModuleName);
-                this.log('Injecting ' + chalk.green(this.targetModuleName) + ' into ' + chalk.green(this.targetPartentModule.fileName));
+                this.log(chalk.green('   inject ') + this.targetModuleName + chalk.green(' into ') + this.targetPartentModule.fileName);
                 this.targetPartentModule.parsedModule.save();
             }
         },
