@@ -9,7 +9,7 @@ var os = require('os'),
     assert = require('chai').assert;
 
 module.exports = exports = {
-    testDirectory: path.join(os.tmpdir(), './temp-test'),
+    testDirectory: path.join(os.tmpdir(), './oasp-generator-temp-test'),
 
     resolvePathInTestDirectory: function (requestedPath, testDirectory) {
         return path.join(testDirectory || this.testDirectory, requestedPath);

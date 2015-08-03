@@ -29,6 +29,7 @@
   ],
   "dependencies": {
     "chalk": "1.1.0",
+    "mkdirp": "^0.5.1",
     "ng-parse-module": "^0.1.0",
     "string": "3.3.0",
     "underscore": "1.8.3",
