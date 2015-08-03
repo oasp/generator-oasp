@@ -20,7 +20,7 @@ describe('oasp:module', function () {
 
     before(function (done) {
         helpers.testDirectory(oaspGenTestUtils.testDirectory, function () {
-            fs.copy(path.join(__dirname, 'generator-module/templates/test-case-1'), oaspGenTestUtils.testDirectory, done);
+            fs.copy(path.join(__dirname, 'generator-templates/test-case-1'), oaspGenTestUtils.testDirectory, done);
         });
     });
 

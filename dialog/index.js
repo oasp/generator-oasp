@@ -1,14 +1,12 @@
 'use strict';
-var yeoman = require('yeoman-generator');
-var oaspUtil = require('../utils.js');
 var chalk = require('chalk');
 var paths = require('path');
-var ngParseModule = require('ng-parse-module');
+var oaspBase = require('../oasp-base-generator.js');
+var mkdirp = require('mkdirp');
 
-module.exports = yeoman.generators.Base.extend({
-
+module.exports = oaspBase.extend({
     constructor: function () {
-        yeoman.generators.Base.apply(this, arguments);
+        oaspBase.apply(this, arguments);
         this.argument('dialogName', {
             type: String,
             required: true,
@@ -19,66 +17,33 @@ module.exports = yeoman.generators.Base.extend({
             required: false,
             desc: 'Module name'
         });
-    },
-
-    initializing: function () {
-
-        var mainModuleDirectory,
-            destinationModulePath,
-            destinationDirectory,
-            mainModulePath;
-
-        this.canCreateDialog = true;
 
         if (this.moduleName) {
-            // create dialog in the mainApp/moduleName dir, if not exist then call module generator to generate it
-
-            mainModuleDirectory = oaspUtil.findMainModuleDirectory(this);
-            destinationModulePath = paths.join(mainModuleDirectory, this.moduleName, this.moduleName) + '.module.js';
-            mainModulePath = oaspUtil.findMainModulePath(this);
-            this.angularModuleName = ngParseModule.parse(mainModulePath).name + '.' + oaspUtil.angularNamesBuilder.moduleName2(this.moduleName);
-            if (!this.fs.exists(destinationModulePath)) {
-                this.env.cwd = this.destinationPath();
-                this.composeWith('oasp:module', {args: [this.moduleName]});
-            }
-            destinationDirectory = paths.join(mainModuleDirectory, this.moduleName);
-        }
-        else {
-            // create dialog in the current directory in the nearest module
-
-            destinationModulePath = oaspUtil.findClosestModulePath(this);
-            if (destinationModulePath) {
-                var module = ngParseModule.parse(destinationModulePath);
-                this.angularModuleName = module.name;
-                destinationDirectory = oaspUtil.findDestinationDirectory(this);
-            }
-            else {
-                this.log(chalk.red('-> Can\'t find the main application module.'));
-                this.canCreateDialog = false;
-            }
+            this.targetParentModule = this.moduleFinder.findModuleByName(this.destinationPath(), this.appPath, this.moduleName);
+            this.targetBasePath = this.targetParentModule ? this.targetParentModule.moduleDir : null;
+        } else {
+            this.targetParentModule = this.moduleFinder.findClosestModule(this.destinationPath(), this.env.cwd);
+            this.targetBasePath = this.env.cwd;
         }
 
-        if (this.canCreateDialog) {
-            this.controllerName = oaspUtil.angularNamesBuilder.controllerName(this.dialogName);
-            this.controllerPath = paths.join(destinationDirectory, this.dialogName, this.dialogName + '.controller.js');
-            this.controllerSpecPath = paths.join(destinationDirectory, this.dialogName, this.dialogName + '.controller.spec.js');
-            this.dialogPath = paths.join(destinationDirectory, this.dialogName, this.dialogName + '.tpl.html');
-
-            this.log(chalk.green('-> Generating dialog with controller in module: ' + this.angularModuleName));
+        if (this.targetParentModule === null) {
+            this.env.error(chalk.red('-> Can\'t find parent module.'));
         }
+
+        this.targetModuleName = this.nameBuilder.ngModuleName(this.targetParentModule.parsedModule.name, this.moduleName);
+        this.trainItemName = this.nameBuilder.trainItemName(this.dialogName);
     },
     writing: {
-        saveDialogTemplate: function () {
-            if (this.canCreateDialog) {
-                this.fs.copyTpl(this.templatePath('dialog.html'), this.dialogPath, this);
-                this.log(this.dialogPath);
-            }
+        saveModuleFile: function () {
+            var dialogDirectory = paths.join(this.targetBasePath, this.trainItemName),
+                currentCwd = process.cwd();
+            mkdirp.sync(dialogDirectory);
+            this.env.cwd = dialogDirectory;
+            this.composeWith('oasp:controller', {args: [this.trainItemName]});
+            process.chdir(currentCwd);
         },
-        saveDialogControllerAndSpecFile: function () {
-            if (this.canCreateDialog) {
-                this.fs.copyTpl(this.templatePath('controller.js'), this.controllerPath, this);
-                this.fs.copyTpl(this.templatePath('controller-spec.js'), this.controllerSpecPath, this);
-            }
+        copyHtml: function () {
+            this.fs.copyTpl(this.templatePath('dialog.html'), paths.join(this.targetBasePath, this.trainItemName, this.trainItemName + '.tpl.html'), this);
         }
     }
 });
