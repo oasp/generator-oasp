@@ -8,20 +8,27 @@ var gulpsync = require('gulp-sync')(gulp);
 
 
 /** ======================================== build ======================================== **/
-gulp.task('build:develop', [], function () {
-    process.env.NODE_ENV = 'dev';
-    gulp.start('build');
+
+gulp.task('env:develop', function () {
+    $.env({
+        vars: {
+            NODE_ENV: 'dev'
+        }
+    });
 });
 
-gulp.task('build:ci', ['test'], function () {
-    process.env.NODE_ENV = 'prod';
-    gulp.start('build');
+gulp.task('env:prod', function () {
+    $.env({
+        vars: {
+            NODE_ENV: 'prod'
+        }
+    });
 });
+gulp.task('build:develop', ['env:develop', 'build']);
 
-gulp.task('build:dist', [], function () {
-    process.env.NODE_ENV = 'prod';
-    gulp.start('build');
-});
+gulp.task('build:ci', gulpsync.sync(['test', 'build:dist']));
+
+gulp.task('build:dist', ['env:prod', 'build']);
 
 gulp.task('build', ['indexHtml', 'styles', 'img', 'fonts', 'i18n', 'html']);
 
@@ -35,6 +42,7 @@ gulp.task('styles', function () {
         .pipe($.less({
             paths: config.styles.includePaths()
         }))
+        .pipe($.plumber())
         .pipe(gulp.dest(config.paths.tmp))
         .pipe($.size());
 });
