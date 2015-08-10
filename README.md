@@ -99,4 +99,4 @@ The above Gulp's task creates the `myapp/dist` directory and put there HTML docu
  
 #### More info
 
-For more details, please refer to the [wiki](https://github.com/oasp/oasp4js/wiki).
+For more details, please refer to the [wiki](https://github.com/oasp/generator-oasp/wiki).
