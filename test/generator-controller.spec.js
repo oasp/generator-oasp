@@ -18,28 +18,35 @@ describe('oasp:module', function () {
             .on('end', done);
     };
 
-    before(function (done) {
-        helpers.testDirectory(oaspGenTestUtils.testDirectory, function () {
-            fs.copy(path.join(__dirname, 'generator-templates/test-case-1'), oaspGenTestUtils.testDirectory, done);
+    var executeTestCase = function (testcase, appPath, testPath) {
+
+        describe(testcase, function () {
+            before(function (done) {
+                helpers.testDirectory(oaspGenTestUtils.testDirectory, function () {
+                    fs.copy(path.join(__dirname, 'generator-templates', testcase), oaspGenTestUtils.testDirectory, done);
+                });
+            });
+
+            describe('calling generator', function () {
+
+                before(runControllerGenerator.bind(null, path.join(oaspGenTestUtils.testDirectory, appPath + '/component-1'), 'sample-controller'));
+
+                it('creates files', function () {
+                    assert.file([
+                            appPath + '/component-1/sample-controller.controller.js',
+                            testPath + '/component-1/sample-controller.controller.spec.js'
+                    ]);
+                });
+
+                it('creates correct spec and controller file', function () {
+                    assert.fileContent(appPath + '/component-1/sample-controller.controller.js', 'angular.module(\'app.component1\')');
+                    assert.fileContent(appPath + '/component-1/sample-controller.controller.js', '.controller(\'SampleControllerCntl\'');
+                    assert.fileContent(testPath + '/component-1/sample-controller.controller.spec.js', 'SampleControllerCntl');
+                });
+            });
         });
-    });
+    };
 
-
-    describe('calling generator', function () {
-
-        before(runControllerGenerator.bind(null, path.join(oaspGenTestUtils.testDirectory,'app/component-1'), 'sample-controller'));
-
-        it('creates files', function () {
-            assert.file([
-                'app/component-1/sample-controller.controller.js',
-                'app/component-1/sample-controller.controller.spec.js'
-            ]);
-        });
-
-        it('creates correct spec and controller file', function () {
-            assert.fileContent('app/component-1/sample-controller.controller.js', 'angular.module(\'app.component1\')');
-            assert.fileContent('app/component-1/sample-controller.controller.js', '.controller(\'SampleControllerCntl\'');
-            assert.fileContent('app/component-1/sample-controller.controller.spec.js', 'SampleControllerCntl');
-        });
-    });
+    executeTestCase('test-case-1', 'app','app');
+    executeTestCase('test-case-2', 'src','test');
 });

@@ -4,6 +4,7 @@ var ngParseModule = require('ng-parse-module');
 var yeoman = require('yeoman-generator');
 var _ = require('underscore');
 _.str = require('underscore.string');
+var fs = require('fs-extra');
 
 if (!String.prototype.format) {
     String.prototype.format = function () {
@@ -22,6 +23,12 @@ module.exports = yeoman.generators.Base.extend({
         var that = this;
         this.hasBeenCalledFromRoot = function (rootPath, currentPath) {
             return rootPath === currentPath;
+        };
+
+        this.pathBuilder = {
+            calculateTestBasePath: function (path, appPath, testPath) {
+                return path.replace(appPath, testPath);
+            }
         };
 
         this.nameBuilder = {
@@ -100,15 +107,14 @@ module.exports = yeoman.generators.Base.extend({
 
 
         //////////////////////////////////////////////////////////////////////////////////
-        this.appPath = 'app';
-
+        this.paths = fs.readJsonSync(this.destinationPath('config.json')).paths;
         this.isCalledFromRoot = this.hasBeenCalledFromRoot(this.destinationPath(), this.env.cwd);
+
         //calculate target module
         if (this.isCalledFromRoot) {
-            this.targetParentModule = this.moduleFinder.findAppModule(this.destinationPath(), this.appPath);
+            this.targetParentModule = this.moduleFinder.findAppModule(this.destinationPath(), this.paths.src);
         } else {
             this.targetParentModule = this.moduleFinder.findClosestModule(this.destinationPath(), this.env.cwd);
         }
-
     }
 });

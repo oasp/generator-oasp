@@ -9,6 +9,6 @@ module.exports = function (Generator) {
     Generator.prototype.fixTempateFileNames = function () {
         this.templateFiles['app/app.module.js'] = 'app/' + this.props.appTrainName + '.module.js';
         this.templateFiles['app/app.less'] = 'app/' + this.props.appTrainName + '.less';
-        this.templateFiles['app/app.module.spec.js'] = 'app/' + this.props.appTrainName + '.module.spec.js';
+        this.templateFiles['test/app.module.spec.js'] = 'test/' + this.props.appTrainName + '.module.spec.js';
     };
 };

@@ -13,7 +13,7 @@ module.exports = oaspBase.extend({
         });
 
         if (this.isCalledFromRoot) {
-            this.targetBasePath = this.destinationPath(this.appPath);
+            this.targetBasePath = this.destinationPath(this.paths.src);
         } else {
             this.targetBasePath = this.env.cwd;
         }

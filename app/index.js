@@ -11,6 +11,8 @@ var Generator = yeoman.generators.Base.extend({
         require('./src/options.js')(this);
 
         this.props = {};
+
+        this.paths = {};
     },
 
     prompting: function () {
@@ -19,8 +21,11 @@ var Generator = yeoman.generators.Base.extend({
     }
 });
 
+require('./src/paths.js')(Generator);
 require('./src/files.js')(Generator);
 require('./src/app-name.js')(Generator);
+
+require('./src/setup-output.js')(Generator);
 
 require('./src/writing.js')(Generator);
 

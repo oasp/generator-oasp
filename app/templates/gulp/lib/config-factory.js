@@ -69,13 +69,13 @@ var configFactory = function (externalConfig) {
             },
             testSrc: function () {
                 return _.flatten([
-                    pathsBuilder.build('{src}/*.mock.js'),
+                    pathsBuilder.build('{testSrc}/*.mock.js'),
                     pathsBuilder.buildForTopLevelModules(
-                        '{src}/{moduleDir}/**/*.mock.js'
+                        '{testSrc}/{moduleDir}/**/*.mock.js'
                     ),
-                    pathsBuilder.build('{src}/*.spec.js'),
+                    pathsBuilder.build('{testSrc}/*.spec.js'),
                     pathsBuilder.buildForTopLevelModules(
-                        '{src}/{moduleDir}/**/*.spec.js'
+                        '{testSrc}/{moduleDir}/**/*.spec.js'
                     )
                 ]);
             },

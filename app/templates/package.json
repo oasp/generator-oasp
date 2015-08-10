@@ -48,7 +48,7 @@
         "karma-chrome-launcher": "0.2.0",
         "karma-coverage": "0.4.2",
         "karma-jasmine": "0.3.6",
-        "karma-junit-reporter": "0.3.1",
+        "karma-junit-reporter": "0.3.3",
         "karma-phantomjs-launcher": "0.2.0",
         "lodash": "3.10.0",
         "main-bower-files": "2.9.0",

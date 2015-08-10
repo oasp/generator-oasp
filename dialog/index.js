@@ -19,7 +19,7 @@ module.exports = oaspBase.extend({
         });
 
         if (this.moduleName) {
-            this.targetParentModule = this.moduleFinder.findModuleByName(this.destinationPath(), this.appPath, this.moduleName);
+            this.targetParentModule = this.moduleFinder.findModuleByName(this.destinationPath(), this.paths.src, this.moduleName);
             this.targetBasePath = this.targetParentModule ? this.targetParentModule.moduleDir : null;
         } else {
             this.targetParentModule = this.moduleFinder.findClosestModule(this.destinationPath(), this.env.cwd);

@@ -12,7 +12,7 @@ module.exports = oaspBase.extend({
             desc: 'Controller name'
         });
         this.targetBasePath = this.env.cwd;
-        this.targetSpecBasePath = this.env.cwd;
+        this.targetSpecBasePath = this.pathBuilder.calculateTestBasePath(this.targetBasePath, this.paths.src, this.paths.testSrc);
 
         if (this.targetParentModule === null) {
             this.env.error(chalk.red('-> Can\'t find parent module.'));

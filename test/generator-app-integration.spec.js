@@ -1,12 +1,12 @@
 'use strict';
 
 var path = require('path'),
-    assert = require('yeoman-generator').assert,
     helpers = require('yeoman-generator').test,
     oaspGenTestUtils = require('./app-suite-testcases/oasp-generator-test-utils'),
     specs = [
-        require('./app-suite-testcases/simple/simple.js'),
-        require('./app-suite-testcases/config-factory/config-factory.js')
+       // require('./app-suite-testcases/simple/simple.js'),
+       // require('./app-suite-testcases/config-factory/config-factory.js'),
+        require('./app-suite-testcases/non-default-source-directories/non-default-source-directories.js')
     ];
 describe('oasp:app', function () {
     before(function (done) {
@@ -20,15 +20,6 @@ describe('oasp:app', function () {
                 .withOptions({ 'skip-install': false })
                 .on('end', done);
         }
-    });
-
-    it('creates files', function () {
-        assert.file([
-            'bower.json',
-            'package.json',
-            '.editorconfig',
-            '.jshintrc'
-        ]);
     });
 
     specs.forEach(function (specFn) {

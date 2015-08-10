@@ -65,6 +65,7 @@ gulp.task('indexHtml', ['styles', 'img:sprite', 'ngTemplates'], function () {
             recursive: true,
             includeBase: config.paths.src}))
         .pipe($.if(isBuildForProd(), $.usemin({
+            path: '{' + config.paths.tmp + ',' + config.paths.src + '}',
             css: [$.minifyCss(), 'concat', $.rev()],
             jsModernizr: [$.ngAnnotate(), $.uglify({preserveComments: $.uglifySaveLicense}), $.rev()],
             jsVendor: [$.ngAnnotate(), $.uglify({preserveComments: $.uglifySaveLicense}), $.rev()],

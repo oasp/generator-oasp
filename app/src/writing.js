@@ -8,19 +8,27 @@ module.exports = function (Generator) {
                 that
             );
         });
-        this.staticFiles.forEach(function (file) {
+        Object.keys(this.staticFiles).forEach(function (file) {
             that.fs.copy(
                 that.templatePath(file),
-                that.destinationPath(file)
+                that.destinationPath(that.staticFiles[file])
             );
         });
     };
+
     Generator.prototype.writeYeomanConfig = function () {
         this.config.save();
     };
+
     Generator.prototype.generateDependencies = function () {
         this.installDependencies({
             skipInstall: this.options['skip-install']
         });
+    };
+
+    Generator.prototype.writeConfigJson = function () {
+        var config = this.fs.readJSON(this.destinationPath('config.json'));
+        config.paths = this.paths;
+        this.fs.writeJSON(this.destinationPath('config.json'), config);
     };
 };

@@ -1,7 +1,7 @@
 {
     "templateFiles": [
         "app/app.module.js",
-        "app/app.module.spec.js",
+        "test/app.module.spec.js",
         "app/component-1/component-1.module.js",
         "app/component-1/dialog-a/dialog-a.tpl.html",
         "app/component-2/component-2.less",
@@ -18,7 +18,7 @@
         "app/main/layout/variables.less",
         "app/main/main.less",
         "app/main/main.module.js",
-        "app/main/main.module.spec.js",
+        "test/main/main.module.spec.js",
         "app/main/page-not-found/page-not-found.tpl.html",
         "app/main/welcome/welcome.tpl.html",
         "bower.json",

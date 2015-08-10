@@ -26,16 +26,21 @@ module.exports = exports = {
     deleteOldFilesAndCopyNewOnes: function (files, srcDirectory, destDirectory) {
         destDirectory = destDirectory || this.testDirectory;
         if (files) {
-            files.forEach(function (file) {
-                rm.sync(path.join(destDirectory, file));
-            });
+            this.deleteOldFiles(files, destDirectory);
             //copy test case file into output
             files.forEach(function (file) {
                 fs.copySync(path.join(srcDirectory, file), path.join(destDirectory, file));
             });
         }
     },
-
+    deleteOldFiles: function (files, destDirectory) {
+        destDirectory = destDirectory || this.testDirectory;
+        if (files) {
+            files.forEach(function (file) {
+                rm.sync(path.join(destDirectory, file));
+            });
+        }
+    },
     runBowerInstallAndCallDone: function (done) {
         bower.commands.install().on('end', function () {
             done();
