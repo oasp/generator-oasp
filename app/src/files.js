@@ -10,7 +10,11 @@ module.exports = function (Generator) {
         });
         that.templateFiles = {};
         files.templateFiles.forEach(function (file) {
-            that.templateFiles[file] = file;
+            var output = file;
+            if (file.indexOf('_') === 0) {
+                output = file.replace('_', '');
+            }
+            that.templateFiles[file] = output;
         });
     };
 };

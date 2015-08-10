@@ -1,8 +1,8 @@
 node_modules
 bower_components
-dist
-.tmp
-test
+<%- props.paths.tmp %>
+<%- props.paths.dist %>
+<%- props.paths.testOutput %>
 .idea/
 *.iml
 java/target

@@ -10,5 +10,6 @@ module.exports = function (Generator) {
             testSrc: this.options['test-path'],
             testOutput: this.options['test-output-path']
         };
+        this.props.paths = this.paths;
     };
 };
