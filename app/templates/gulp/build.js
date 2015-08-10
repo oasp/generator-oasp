@@ -54,7 +54,13 @@ gulp.task('style:copy', function () {
 });
 
 /** ======================================== indexHtml ======================================== **/
-gulp.task('indexHtml', ['styles', 'img:sprite', 'ngTemplates'], function () {
+gulp.task('indexHtml', gulpsync.sync([
+    ['styles', 'img:sprite', 'ngTemplates'],
+    'indexHtml:html'
+]));
+
+//only build index.html without dependencies
+gulp.task('indexHtml:html', function () {
     return gulp.src(config.indexHtml.src())
         //TODO fix it
         .pipe($.wiredep.stream({
@@ -82,7 +88,6 @@ gulp.task('indexHtml', ['styles', 'img:sprite', 'ngTemplates'], function () {
         .pipe(gulp.dest(config.output()))
         .pipe($.size());
 });
-
 
 /** ======================================== img ======================================== **/
 gulp.task('img', ['img:sprite', 'img:copy']);
