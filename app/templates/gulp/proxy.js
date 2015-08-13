@@ -38,8 +38,10 @@ proxy.on('upgrade', function (req, socket, head) {
  */
 function proxyMiddleware(req, res, next) {
     if (/\/services\//.test(req.url)) {
+        req.headers["host"] = config.proxyHostname;
         proxy.web(req, res);
     } else if (/\/websocket\//.test(req.url)) {
+        req.headers["host"] = config.proxyHostname;
         proxy.web(req, res);
     } else {
         next();
