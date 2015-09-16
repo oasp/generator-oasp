@@ -1,1 +1,1 @@
-angular.module('<%= moduleName %>', []);
+angular.module('<%= targetModuleName %>', []);

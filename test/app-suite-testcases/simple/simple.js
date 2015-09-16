@@ -45,22 +45,22 @@ module.exports = function () {
 
                 describe('index html', function () {
                     it('should contain bower libs', function () {
-                        oaspGenTestUtils.assert.contaisScript('.tmp/index.html', 'bower_components/angular/angular.js');
-                        oaspGenTestUtils.assert.contaisScript('.tmp/index.html', 'bower_components/jquery/dist/jquery.js');
+                        oaspGenTestUtils.assert.contaisScript('.tmp/index.html', '../bower_components/angular/angular.js');
+                        oaspGenTestUtils.assert.contaisScript('.tmp/index.html', '../bower_components/jquery/dist/jquery.js');
                     });
                     it('should contain app sources in proper order', function () {
-                        oaspGenTestUtils.assert.contaisScript('.tmp/index.html', 'bower_components/angular/angular.js');
-                        oaspGenTestUtils.assert.contaisScript('.tmp/index.html', 'bower_components/jquery/dist/jquery.js');
+                        oaspGenTestUtils.assert.contaisScript('.tmp/index.html', 'app.module.js');
+                        oaspGenTestUtils.assert.contaisScript('.tmp/index.html', 'main/main.templates.js');
                     });
                 });
 
                 describe('cached templates', function () {
                     it('should generate angular module with cached html templates', function () {
-                        var cachedTemplatesModuleFile = oaspGenTestUtils.resolvePathInTestDirectory('.tmp/main/js/main.templates.js');
+                        var cachedTemplatesModuleFile = oaspGenTestUtils.resolvePathInTestDirectory('.tmp/main/main.templates.js');
                         assert.file(cachedTemplatesModuleFile);
                         assert.fileContent(cachedTemplatesModuleFile, /angular.module\("app.main.templates", \[\]\)/);
-                        assert.fileContent(cachedTemplatesModuleFile, /main\/html\/page-not-found.html/);
-                        assert.fileContent(cachedTemplatesModuleFile, /main\/html\/welcome.html/);
+                        assert.fileContent(cachedTemplatesModuleFile, /main\/layout\/sample-dialog.html/);
+                        assert.fileContent(cachedTemplatesModuleFile, /main\/layout\/sample-dialog2.html/);
                     });
                 });
             });
@@ -116,15 +116,15 @@ module.exports = function () {
                         var appJsFile = oaspGenTestUtils.queryAndResolveFileInTestDirectory('dist/js/app-*.js');
                         assert.file(appJsFile);
                         assert.fileContent(appJsFile, /angular.module\("app.main.templates",\[\]\)/);
-                        assert.fileContent(appJsFile, /main\/html\/page-not-found.html/);
-                        assert.fileContent(appJsFile, /main\/html\/welcome.html/);
+                        assert.fileContent(appJsFile, /main\/layout\/sample-dialog.html/);
+                        assert.fileContent(appJsFile, /main\/layout\/sample-dialog2.html/);
                     });
                 });
 
                 describe('i18n', function () {
                     it('should copy internationalization files', function () {
-                        assert.file(oaspGenTestUtils.resolvePathInTestDirectory('dist/main/i18n/locale_en.json'));
-                        assert.file(oaspGenTestUtils.resolvePathInTestDirectory('dist/main/i18n/locale_de.json'));
+                        assert.file(oaspGenTestUtils.resolvePathInTestDirectory('dist/main/i18n/locale-en.json'));
+                        assert.file(oaspGenTestUtils.resolvePathInTestDirectory('dist/main/i18n/locale-de.json'));
                     });
                 });
 

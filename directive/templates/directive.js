@@ -1,4 +1,4 @@
-angular.module('<%= moduleName %>')
+angular.module('<%= targetModuleName %>')
   .directive('<%= directiveName %>', function () {
     'use strict';
     return {
