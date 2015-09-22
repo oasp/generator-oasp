@@ -8,6 +8,7 @@ module.exports = function (Generator) {
         files.staticAppFiles.forEach(function (file) {
             that.staticFiles[file] = file;
         });
+        //TODO refactor it
         that.templateFiles = {};
         files.appFiles.forEach(function (file) {
             that.templateFiles[file] = file;
