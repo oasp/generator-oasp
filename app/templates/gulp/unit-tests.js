@@ -3,6 +3,7 @@
 
 var gulp = require('gulp');
 var $ = require('gulp-load-plugins')();
+var eslint = require('gulp-eslint');
 var createKarmaTask = function (options) {
     /**
      * Pass empty array - karma will query for files.
@@ -40,7 +41,7 @@ gulp.task('test:tdd:debug', ['ngTemplates'], function () {
 });
 gulp.task('lint', function () {
     return gulp.src(config.scripts.lintSrc())
-        .pipe($.jshint())
-        .pipe($.jshint.reporter('jshint-stylish'))
-        .pipe($.jshint.reporter('fail'));
+        .pipe(eslint())
+        .pipe(eslint.format())
+        .pipe(eslint.failOnError());
 });
