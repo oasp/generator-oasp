@@ -1,12 +1,12 @@
 {
     "rules": {
         "quotes": [2, "single"],
-        "linebreak-style": [2, "windows"],
         "semi": [2, "always"],
         "strict": 2
     },
     "env": {
-        "browser": true
+        "browser": true,
+        "node": true
     },
     "globals": {
         "angular": true,
