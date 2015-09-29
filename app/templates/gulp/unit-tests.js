@@ -40,7 +40,7 @@ gulp.task('test:tdd:debug', ['ngTemplates'], function () {
 });
 gulp.task('lint', function () {
     return gulp.src(config.scripts.lintSrc())
-        .pipe($.jshint())
-        .pipe($.jshint.reporter('jshint-stylish'))
-        .pipe($.jshint.reporter('fail'));
+        .pipe($.eslint())
+        .pipe($.eslint.format())
+        .pipe($.eslint.failOnError());
 });

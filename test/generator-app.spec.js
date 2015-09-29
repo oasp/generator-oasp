@@ -17,7 +17,7 @@ describe('oasp:app', function () {
                 'bower.json',
                 'package.json',
                 '.editorconfig',
-                '.jshintrc'
+                '.eslintrc'
             ]);
         });
     });
