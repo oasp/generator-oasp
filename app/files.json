@@ -34,9 +34,12 @@
         "gulp/proxy.js",
         "gulp/server.js",
         "gulp/unit-tests.js",
+        "gulp/e2e-tests.js",
         "gulp/watch.js",
         "gulpfile.js",
         "karma.conf.js",
+        "protractor.conf.js",
+        "e2e/sample.e2e-spec.js",
         "package.json"
     ],
 

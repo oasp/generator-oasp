@@ -85,6 +85,9 @@ var configFactory = function (externalConfig) {
                     pathsBuilder.buildForTopLevelModules(
                         '{src}/{moduleFile}', '{src}/{moduleDir}/**/*.module.js', '{src}/{moduleDir}/**/!(*spec|*mock).js')
                 ]);
+            },
+            e2eSrc: function(){
+                return ['./e2e/*.e2e-spec.js'];
             }
         },
         i18n: {

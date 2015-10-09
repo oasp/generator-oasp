@@ -12,6 +12,7 @@
         "coveralls": "2.11.2",
         "del": "1.2.0",
         "gulp": "3.9.0",
+        "gulp-angular-protractor": "0.0.2",
         "gulp-concat": "2.6.0",
         "gulp-filter": "2.0.2",
         "gulp-flatten": "0.1.0",
