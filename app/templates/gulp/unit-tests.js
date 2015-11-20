@@ -3,40 +3,34 @@
 
 var gulp = require('gulp');
 var $ = require('gulp-load-plugins')();
-var createKarmaTask = function (options) {
-    /**
-     * Pass empty array - karma will query for files.
-     */
-    return gulp.src('dummy.dummy')
-        .pipe($.karma(options))
-        .on('error', function (err) {
-            // Make sure failed tests cause gulp to exit non-zero
-            throw err;
-        });
-};
-gulp.task('test', ['lint', 'ngTemplates'], function () {
+var Server = require('karma').Server;
+
+gulp.task('test', ['lint', 'ngTemplates'], function (done) {
     process.env.generateCoverage = true;
-    return createKarmaTask({
-        configFile: 'karma.conf.js',
-        action: 'run'
-    });
+    new Server({
+        configFile: __dirname + '/../karma.conf.js',
+        singleRun: true,
+        autoWatch: false
+    }, done).start();
 });
-gulp.task('test:tdd', ['ngTemplates'], function () {
+gulp.task('test:tdd', ['ngTemplates'], function (done) {
     process.env.generateCoverage = false;
-    return createKarmaTask({
-        configFile: 'karma.conf.js',
-        action: 'watch'
-    });
+    new Server({
+        configFile: __dirname + '/../karma.conf.js',
+        singleRun: false,
+        autoWatch: true
+    }, done).start();
 });
-gulp.task('test:tdd:debug', ['ngTemplates'], function () {
+gulp.task('test:tdd:debug', ['ngTemplates'], function (done) {
     process.env.generateCoverage = false;
-    return createKarmaTask({
-        configFile: 'karma.conf.js',
-        action: 'watch',
+    new Server({
+        configFile: __dirname + '/../karma.conf.js',
+        singleRun: false,
+        autoWatch: true,
         browsers: [
             'Chrome'
         ]
-    });
+    }, done).start();
 });
 gulp.task('lint', function () {
     return gulp.src(config.scripts.lintSrc())

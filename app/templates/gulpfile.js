@@ -17,7 +17,9 @@ global.$ = require('gulp-load-plugins')({
 
 global.gulpsync = require('gulp-sync')(gulp);
 
-require('require-dir')('./gulp', {recurse: true});
+require('require-dir')('./gulp', {recurse: false});
+
+require('require-dir')('./gulp/parts', {recurse: false});
 
 gulp.task('default', ['clean'], function () {
     gulp.start('build:dist');
