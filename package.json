@@ -1,6 +1,6 @@
 {
     "name": "generator-oasp",
-    "version": "2.0.1",
+    "version": "2.0.2",
     "description": "Yeoman generator for AngularJS applications based on OASP4JS",
     "license": "Apache License 2.0",
     "main": "app/index.js",
