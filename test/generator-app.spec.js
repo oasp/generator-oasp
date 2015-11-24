@@ -17,7 +17,15 @@ describe('oasp:app', function () {
                 'bower.json',
                 'package.json',
                 '.editorconfig',
-                '.jshintrc'
+                '.eslintrc'
+            ]);
+        });
+
+        it('creates files associated with e2e', function () {
+            assert.file([
+                'protractor.conf.js',
+                'e2e/sample.e2e-spec.js',
+                'gulp/e2e-tests.js'
             ]);
         });
     });

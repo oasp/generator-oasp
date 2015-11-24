@@ -17,10 +17,11 @@
     },
     "files": [
         "app",
-        "module",
         "controller",
+        "dialog",
         "directive",
-        "utils.js"
+        "module",
+        "oasp-base-generator.js"
     ],
     "keywords": [
         "yeoman-generator",

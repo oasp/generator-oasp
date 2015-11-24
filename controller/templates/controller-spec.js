@@ -3,7 +3,7 @@ describe('<%= controllerName %> tests', function () {
 
     beforeEach(module('<%= targetModuleName %>'));
     beforeEach(inject(function ($controller) {
-        $controller('<%= controllerName %>', {});
+        $controller('<%= controllerName %>', {$scope: {}});
     }));
 
     describe('tests', function () {

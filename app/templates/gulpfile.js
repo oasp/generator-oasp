@@ -11,7 +11,15 @@ global.isBuildForProd = function () {
 
 global.config = require('./gulp/lib/config-factory.js')(require('./config.json'));
 
-require('require-dir')('./gulp', {recurse: true});
+global.$ = require('gulp-load-plugins')({
+    pattern: ['gulp-*', 'gulp.*', 'main-bower-files', 'uglify-save-license', 'del', 'wiredep']
+});
+
+global.gulpsync = require('gulp-sync')(gulp);
+
+require('require-dir')('./gulp', {recurse: false});
+
+require('require-dir')('./gulp/parts', {recurse: false});
 
 gulp.task('default', ['clean'], function () {
     gulp.start('build:dist');
